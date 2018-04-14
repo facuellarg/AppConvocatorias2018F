@@ -1,0 +1,33 @@
+#formularios {
+	width: 100%;
+	height: 450px;
+
+
+	
+}
+
+
+#botonIniciarSesion, #botonRegistro, #submitIniciarSesion{
+
+	margin-top: 20px
+	
+}
+
+.inputInicio, .inputRegistro{
+	width: 30%; 
+	height: 10%;
+	margin-top: 10px;
+
+	
+}
+.inputna{
+	width: 15%;
+	height: 10%;
+	margin-top: 10px
+}
+
+#submitIniciarSesion{
+	width: 30%;
+	height:10%;
+	margin-top: 10px;
+}
