@@ -88,9 +88,9 @@ render() {
                     </div>
                    
 	                    
-						<input id="inputPapa"type="" ref="PAPA" placeholder="Ingrese su PAPA" value={this.state.papa} onChange={this.updatePapa}></input><br/>
-						<input  id="inputPbm" type="" ref="PBM" placeholder = "Ingrese su PBM" value ={this.state.pbm} onChange={this.updatePbm}></input><br/>
-						<input id="inputCodigo" type="" ref="CODIGO" placeholder = "Ingrese su Codigo" value={this.state.codigo} onChange={this.updateCodigo}></input><br/>
+						<input id="inputPapa"type="number" ref="PAPA" placeholder="Ingrese su PAPA" value={this.state.papa} onChange={this.updatePapa}></input><br/>
+						<input  id="inputPbm" type="number" ref="PBM" placeholder = "Ingrese su PBM" value ={this.state.pbm} onChange={this.updatePbm}></input><br/>
+						<input id="inputCodigo" type="number" ref="CODIGO" placeholder = "Ingrese su Codigo" value={this.state.codigo} onChange={this.updateCodigo}></input><br/>
 						
 					
 					<div style={{textAlign:'center'}}>
