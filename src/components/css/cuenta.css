@@ -1,0 +1,46 @@
+#inputPapa, #inputPbm, #inputCodigo{
+	width: 100%; 
+	border: none;
+	text-align: center;
+	padding: 12px 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border:1px solid #bdbdbd;
+
+	
+}
+#checkbox{
+	align-items: center;;
+	display:inline-block;
+    width:25px;
+    height:25px;
+    margin-top:-1px;
+    vertical-align:middle;
+   	cursor: default;
+   	padding: 15px 15px;
+}
+
+#botonGuardar, #botonCerrar{
+	width: 50%;
+	margin-top: 20px;
+	margin-bottom: 40px
+}
+
+#miCuenta{
+	margin: 1em 0 0.5em 0;
+	font-weight: 600;
+	font-family: 'Titillium Web', sans-serif;
+	position: relative;  
+	font-size: 36px;
+	line-height: 40px;
+	padding: 15px 15px ;
+	color:#696969;
+
+
+}
+
+#nombre, #correo{
+	text-align: left;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}

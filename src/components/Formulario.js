@@ -58,7 +58,7 @@ export class Formulario extends Component{
 		if (this.state.isLogged === 0){
 			let a = this.state.login === 1 ? <LoginForm onChange={this.changeLogged}/> : <RegistForm/>
 			return(
-				<div style={{textAlign: 'center'}} >
+				<div style={{textAlign: 'center', marginTop: `${80}px`, marginBottom: `${150}px`}} >
 					<div className="btn-group" style={{width: '100'}}>
 						<button id="botonIniciarSesion" type="button" onClick={this.handlerOnclickLogin} className="btn btn-info" style={{width: '50'}} >Iniciar sesion</button>
 						<button id="botonRegistro" type="button" className="btn btn-default" onClick={this.handlerOnclickRegistro}  style={{width: '50'}}>Registrarse</button><br/>

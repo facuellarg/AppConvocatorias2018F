@@ -9,7 +9,7 @@ export class FiltroConvocatoria extends Component{
 
 		return(
 
-				<div  className="btn-group"  >
+				<div  className="btn-group" style={{ marginTop: `${80}px`, marginBottom: `${150}px`}} >
 					<button type="button" className="btn1">Convocatorias para selección y vinculación de Estudiantes Auxiliares 2018</button>
 					<button type="button" className="btn1">Convocatorias para selección de Monitores y Becarios Académicos 2018</button>
 					<button type="button" className="btn1">Convocatorias para selección de Promotores de Convivencia 2018</button>

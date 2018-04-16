@@ -7,27 +7,28 @@
 }
 
 
-#botonIniciarSesion, #botonRegistro, #submitIniciarSesion{
+#botonIniciarSesion, #botonRegistro{
 
-	margin-top: 20px
+	margin-top: 20px;
+	height: 35px;
+
 	
 }
 
-.inputInicio, .inputRegistro{
+.inputInicio, .inputRegistro {
 	width: 30%; 
-	height: 10%;
+	height: 27px;
 	margin-top: 10px;
 
 	
 }
 .inputna{
 	width: 15%;
-	height: 10%;
+	height: 27px;
 	margin-top: 10px
 }
-
 #submitIniciarSesion{
-	width: 30%;
-	height:10%;
+	width: 30%; 
+	height: 27px;
 	margin-top: 10px;
 }
