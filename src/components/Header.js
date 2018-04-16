@@ -1,8 +1,5 @@
 import React,{Component} from 'react';
-import sealColombia from './images/sealColombia.png';
-import escudoUnal from './images/escudoUnal.png';
-import escudoUnalSvg from './images/escudoUnal.svg';
-import escudoUnal_black from './images/escudoUnal_black.png';
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {SignOut} from './SignOut.js'

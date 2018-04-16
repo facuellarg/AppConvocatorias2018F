@@ -34,15 +34,16 @@ async handleOnSubmitRegistro(e){
 	         "email": email,
 	         "password": password,
 	         "password_confirmation": password,
+	         "PAPA": 0,
+	         "PBM": 0,
 	      	}) 
       
 		}
-			console.log(options.body);
 		try{
 			let response = await fetch(`${Url}/users`, options);
 			let jsonResponse = await response.json();
 			if(response.ok){
-				console.log(jsonResponse);
+				alert("Registro Completo ya puedes iniciar sesion")
 				return
 			}
 			throw new Error(jsonResponse.email + jsonResponse.password);

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Formulario} from './Formulario.js';
+
 import{Header} from './Header.js';
 import {Footer} from './Footer.js'
 import {Content} from './Content'
@@ -49,7 +49,8 @@ export class Background extends Component{
 
 
 	render(){
-		if (localStorage.getItem('Token')) {
+		if (localStorage.getItem('token')) {
+            console.log("HOla");
     store.dispatch({
          type: "ADD_TO_STORE",
          id: this.state.s_users.id,
