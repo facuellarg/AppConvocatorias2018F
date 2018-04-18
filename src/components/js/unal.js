@@ -1,4 +1,3 @@
-/*Buscador*/
 import jQuery from 'jquery';
 
 "use strict";

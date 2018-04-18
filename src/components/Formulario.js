@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {LoginForm} from './LoginForm.js'
 import {RegistForm} from './RegistForm.js'
 import {obtenerDatos} from './obtenerDatos.js'
-import {Profile} from './Profile.js'
+import {MiCuenta} from './MiCuenta.js'
+
 
 
 export class Formulario extends Component{
@@ -69,7 +70,7 @@ export class Formulario extends Component{
 		}else{
 			return(
 				<div className="container-fluid">
-					<Profile />
+					<MiCuenta />
 				</div>
 			)
 		}		

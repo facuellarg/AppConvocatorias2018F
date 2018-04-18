@@ -14,10 +14,13 @@ export class RegistForm extends Component{
 async handleOnSubmitRegistro(e){
 
 		e.preventDefault();
-		const nombreCompleto = this.refs.nameR.value +" "+this.refs.lastNameR.value;
+		const name = this.refs.nameR.value;
+		const lastname = this.refs.lastNameR.value;
 		const email = this.refs.emailR.value;
 		const password = this.refs.passwordR.value;
 		const confPassword = this.refs.confPassword.value;
+		const dependence_id = this.refs.dependence;
+
 		if(password !== confPassword){
 			alert("las contraseñas no coinciden");
 			return;
@@ -30,12 +33,13 @@ async handleOnSubmitRegistro(e){
            'Content-Type': 'application/json',
 	       },
 	    body: JSON.stringify({
-	    		 "name": nombreCompleto,
+	    		 "name": name,
+	    		 "lastname": lastname,
 	         "email": email,
 	         "password": password,
 	         "password_confirmation": password,
-	         "PAPA": 0,
-	         "PBM": 0,
+	         "dependence_id": dependence_id,
+	
 	      	}) 
       
 		}
@@ -59,8 +63,10 @@ async handleOnSubmitRegistro(e){
 				<input className="inputna" type="text" ref="nameR"  placeholder="Nombres" />
 				<input className="inputna" type="text" ref="lastNameR" placeholder="Apellidos" /><br/>
 				<input className="inputRegistro" type="text" ref="emailR" placeholder="Correo institucional" /><br/>
+				<input className="inputRegistro" type="number" ref="dependence" placeholder="Codigo de la Carrera" /><br/>
 				<input className="inputRegistro" type="password" ref="passwordR" placeholder="Contraseña" /><br/>
 				<input className="inputRegistro" type="password" ref="confPassword" placeholder="Confirmar Contraseña" /><br/>
+
 				<input className="inputRegistro" type="submit" value="Registrarse"/>
 			</form>
 

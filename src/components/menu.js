@@ -1,11 +1,11 @@
 export default [
-  // {
-  //   title: 'Inicio',
-  //   url: '/'
-  // },
+  {
+    title: 'Inicio',
+    url: '/'
+  },
   {
     title: 'Convocatorias',
-    url: '/convocatoria'
+    url: '/Convocatorias'
   },
   // {
   //   title: 'Cerrar Sesion',

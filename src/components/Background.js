@@ -7,7 +7,7 @@ import items from './menu.js';
 import store from './store';
 import {obtenerDatos} from './obtenerDatos.js'
 
-
+import './css/convocatoria.css'
 import './css/bootstrap.min.css';
 import './css/bootstrap-theme.min.css' ;
 import './css/reset.css' ;
@@ -50,7 +50,7 @@ export class Background extends Component{
 
 	render(){
 		if (localStorage.getItem('token')) {
-            console.log("HOla");
+   
     store.dispatch({
          type: "ADD_TO_STORE",
          id: this.state.s_users.id,
@@ -62,11 +62,11 @@ export class Background extends Component{
 			const { children } = this.props;
     return (
      
-        <div>
+        <body>
         	<Header items={items} />
-	        <Content body={children} />
+          <main> <Content body={children} /></main>
 	        <Footer />	
-        </div>
+        </body>
       
     );
 

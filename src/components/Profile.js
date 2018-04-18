@@ -13,7 +13,7 @@ export class Profile extends Component{
 
 
 	onClickActualizar(){
-		this.refs.email.removeAttribute("readonly");
+		
 		this.refs.PAPA.removeAttribute("readonly");
 		this.refs.PBM.removeAttribute("readonly");
 		this.refs.PAPA.focus();

@@ -1,0 +1,11 @@
+th.header {
+    /*background-image: url(../images/bg.gif);*/
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-color: #ccc;
+    cursor: pointer;
+    padding: 5px 15px 5px 5px;
+}
+table {
+    margin-top: 10%;
+}

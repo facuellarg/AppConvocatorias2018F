@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Url} from './Url.js'
 import {obtenerDatos} from './obtenerDatos.js'
+import { Link } from 'react-router-dom'
 
 export class LoginForm extends Component{
 	constructor(props){
@@ -66,7 +67,8 @@ export class LoginForm extends Component{
 			<form style={{textAlign: 'center'}} id='formularioSesion' onSubmit={this.handleOnSubmitLogin}>
 					<input className="inputInicio" ref="email" type="text" name="correoInstitucional" placeholder="Correo institucional" /><br/>				
 					<input className="inputInicio" ref="password" type="password" name="contraseña" placeholder="Ingrese su contraseña" /><br/>
-				<input id="submitIniciarSesion" type="submit" value="Iniciar sesion"/>
+				<input id="submitIniciarSesion" type="submit" value="Iniciar sesion"/><br/>
+				<Link to="/recordarContraseña"> ¿Haz olvidado tu Contraseña? </Link>
 			</form>
 			)
 	}
