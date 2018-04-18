@@ -2,9 +2,14 @@ import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
 import {convocatoriaStore} from './convocatoriaStore.js'
 import {Url} from './Url.js'
-import './css/Convocatorias.css'
-import Pagination from "react-js-pagination";
 
+import Pagination from "react-js-pagination";
+import {Form} from 'react-bootstrap/lib'
+import {Checkbox} from 'react-bootstrap/lib'
+import {FormGroup} from 'react-bootstrap/lib'
+import {Button} from 'react-bootstrap/lib'
+import {ControlLabel} from 'react-bootstrap/lib'
+import './css/convocatoria.css'
 export class Convocatorias extends Component{
 	constructor(){
 		super()
@@ -167,26 +172,69 @@ export class Convocatorias extends Component{
 );
 		return(
 			<div className="container-fluid">
+			<main>
 			<div className="col-md-3">
 			<fieldset style={{marginTop:30}}>
 			<legend>Filtros</legend>
-			
-			
+		
+					{/*<label >filtro por dependencia: </label><input type="checkBox" />
 
-			
-			<div className="input-group">
-			
-				<span class="input-group-addon" >
-					<input type="radio" />
-				</span>
 				<select  className="form-control" ref="levelF" >
 					<option>Pregrado</option>
 					<option>Postgrado</option>
 				</select>
 
-			</div>
 
-			<button>Filtrar</button>
+			<button>Filtrar</button>*/}
+			<Form inline >
+			  <FormGroup >
+			  	<Checkbox  className="checkbox" ref="levelFilter" inline></Checkbox>
+			    <select  className="form-control" ref="selectLevel">
+						<option selected> -- </option>
+						<option>Pregrado</option>
+					<option>Postgrado</option>
+
+				</select>
+			  </FormGroup>
+			  <br/>
+			  <FormGroup >
+			  	<Checkbox className="checkbox" ref="dependenceFilter" inline></Checkbox>
+			    <select  className="form-control" ref="selectDependence" >
+			    <option selected> -- </option>
+					<option>Pregrado</option>
+					<option>Postgrado</option>
+				</select>
+			  </FormGroup>
+			  <br/>
+			  
+			  <FormGroup >
+
+			  	
+			  	<Checkbox className="checkbox" ref="PAPAFilter" inline></Checkbox>
+			  	<ControlLabel inline>PAPA</ControlLabel>{' '}
+			    <input  ref="minPAPA"type="number" min="3.0" max="5.0"/>--
+					<input  ref="maxPAPA"type="number" min="3.0" max="5.0"/>
+					<br/>
+									
+			  </FormGroup>
+			   <FormGroup >
+			  	<Checkbox className="checkbox" ref="PBMFilter" inline></Checkbox>
+			  	 <ControlLabel>PBM</ControlLabel>{' '}
+			    <input  ref="minPBM"type="number" min="1.0" max="100.0"/>--
+					<input  ref="maxPBM"type="number" min="1.0" max="100.0"/>
+					<br/>
+			  </FormGroup>
+			  <FormGroup >
+			  	<Checkbox  className="checkbox" ref="PBMFilter" inline></Checkbox>
+			  	 <ControlLabel>Mensualidad</ControlLabel>{' '}
+				    <input  ref="minPBM"type="number" min="100000" max="10000000"/>--
+						<input  ref="maxPBM"type="number" min="100000" max="10000000"/>
+					
+			  </FormGroup>
+			 
+			  <Button >Filtrar</Button>
+
+			</Form>
 	
 			</fieldset>
 			</div>
@@ -223,11 +271,12 @@ export class Convocatorias extends Component{
 			</table>
 			</div>
 			{	//	<div className="col-md-2"></div>
-		}
-			<div className="row" >
-			<div className="col-md-3">
+		}	
+			</main>
+			<div className="row" style={{align:'center'}} >
+			<div className="col-md-4">
 				</div>
-				<div className="col-md-4" style={{align:'left'}}>
+				<div className="col-md-4" style={{align:'center'}}>
 				{pagination} 
 				</div>
 				<div className="col-md-4">

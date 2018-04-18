@@ -9,3 +9,8 @@ th.header {
 table {
     margin-top: 10%;
 }
+
+.checkbox {
+	 vertical-align: middle;
+
+}

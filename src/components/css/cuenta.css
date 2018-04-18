@@ -1,4 +1,4 @@
-input {
+#input {
 	width: 100%; 
 	border: none;
 	text-align: center;
@@ -9,16 +9,7 @@ input {
 
 	
 }
-#checkbox{
-	align-items: center;;
-	display:inline-block;
-    width:25px;
-    height:25px;
-    margin-top:-1px;
-    vertical-align:middle;
-   	cursor: default;
-   	padding: 15px 15px;
-}
+
 
 #botonGuardar, #botonCerrar{
 	width: 50%;
