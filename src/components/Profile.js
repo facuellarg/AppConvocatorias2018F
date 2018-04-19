@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import store from './store';
 import {Url} from './Url'
+import dependences from './js/dependences.js'
  
 
 export class Profile extends Component{
@@ -70,10 +71,10 @@ export class Profile extends Component{
 				<div className="row">
 					<label>Corrreo Institucional: </label><input  type="text" defaultValue={`${store.getState().email}`}  ref="email" readonly="readonly"></input>
 				</div>
-				<div className="row">
-					<label>PAPA</label><input type="number" min="0" max="5" readonly="readonly"  defaultValue={`${store.getState().PAPA}`} ref="PAPA"></input>
-					<label>PBM</label><input type="number" min="0"  readonly="readonly" defaultValue={`${store.getState().PBM}`}ref="PBM"></input>
-				</div>
+				{/*<div className="row">
+									<label>PAPA</label><input type="number" min="0" max="5" readonly="readonly"  defaultValue={`${store.getState().PAPA}`} ref="PAPA"></input>
+									<label>PBM</label><input type="number" min="0"  readonly="readonly" defaultValue={`${store.getState().PBM}`}ref="PBM"></input>
+								</div>*/}
 				<div className="row">
 					<button className="btn btn-default" onClick={this.onClickActualizar} >Actualizar</button>
 					<button className="btn btn-default" onClick={this.onClickGuardar} ref="guardar" >Guardar</button>

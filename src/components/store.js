@@ -6,7 +6,10 @@ const reducer = (state,action) => {
             ...state,
             id: action.id,
             name: action.name,
+            lastname: action.lastname,
+            level:action.level,
             email: action.email,
+            dependence_id: action.dependence_id,
             PAPA: action.PAPA,
             PBM: action.PBM
         }
@@ -14,4 +17,4 @@ const reducer = (state,action) => {
     return state;
 };
 
-export default createStore(reducer, {id: "sinnada",name: "sinnadas",email: "",PAPA: 0,PBM:0});
+export default createStore(reducer, {id: "sinnada",name: "sinnadas",lastname:" ",level:"pregrado",email: "",dependence_id:0,PAPA: 0,PBM:0});

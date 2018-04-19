@@ -12,7 +12,10 @@ export class LoginForm extends Component{
 
 		}
 
-  	
+  validateEmail(email) {
+    var re = /[a-zA-Z]+@+unal.edu.co/;
+    return re.test(email);
+}
 
 	async handleOnSubmitLogin(e){
 		
@@ -38,7 +41,10 @@ export class LoginForm extends Component{
 		}
 		
 
-
+		if(!this.validateEmail(email)){
+			alert("el correo debe ser un correo de la universidad nacional (example@unal.edu.co)")
+			return;
+		}
 		try{
 			let response = await fetch(Url+'/user_token', options);
 			

@@ -4,65 +4,69 @@ import './css/cuenta.css';
 import { Link } from 'react-router-dom';
 import store from './store';
 import {Url} from './Url'
+import dependences from './js/dependences.js'
 
 
 export class MiCuenta extends Component{
 constructor(){
 		super()
-		this.state = {email: store.getState().email }
+		this.state = {email: store.getState().email , dependences:dependences}
 		this.onClickActualizar = this.onClickActualizar.bind(this);
 		this.onClickGuardar = this.onClickGuardar.bind(this);
 	}
-
+componentDidMount(){
+	this.refs.selectDependence.value = store.getState().dependence_id;
+}
 
 
 onClickActualizar(){
 		
-		this.refs.PAPA.removeAttribute("readonly");
-		this.refs.PBM.removeAttribute("readonly");
+		this.refs.selectDependence.removeAttribute('disabled');
+		this.refs.selectLevel.removeAttribute('disabled');
 		this.refs.name.removeAttribute("readonly");
-		this.refs.PAPA.focus();
+		this.refs.selectDependence.focus();
 	}
 
 	async onClickGuardar(){
 		const name = this.refs.name.value;
-		const email = this.state;
-		const PAPA = this.refs.PAPA.value;
-		const PBM = this.refs.PBM.value;
-		if (PAPA > 5 ){
-			alert("El PAPA debe estar entre 0 y 5");
-			this.refs.PAPA.focus()
-
-			return
-
-		}
+		const lastname = this.refs.lastname.value;
+		const email = this.state.email;
+		const dependence_id = this.refs.selectDependence.value;
+		const level = this.refs.selectLevel.value;
+		
+		
 		const options={
       method: 'PUT',
 	    headers: {
 	    		"Authorization": localStorage.getItem('token'),
 	        'Accept': 'application/json',
-           'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
 	       },
 	    body: JSON.stringify({
 	    		 "name": name,
+	    		 "lastname": lastname,
+	    		 "level" : level,
 	         "email": email,
-	         "PAPA": PAPA,
-	         "PBM": PBM,
+	         "dependence_id":dependence_id ,
 	      	})
 
 		}
+
 		try{
 			let response = await fetch(`${Url}/users/${store.getState().id}`, options);
 			let jsonResponse = await response.json();
+			console.log(jsonResponse);
 			if(response.ok){
 				alert("Datos Actualizados");
 			
 				document.location.reload()
 				return
 			}
-			throw new Error(jsonResponse.email + jsonResponse.password);
+			throw new Error((jsonResponse));
+			
+
 		}catch(error){
-			console.log(error.message)
+			console.log(error)
 		}
 	}	
 
@@ -91,15 +95,24 @@ render() {
                   <div className="col-sm-4 padding-profile">
                     <div className="caja">
                     	 <h4 id="correo" className="s-property-title">Correo: {this.state.email}</h4>
-                       <input id="inputName" ref="name" type="text" readonly="readonly" defaultValue={`${store.getState().name}`} ></input>
-                     
-                  
-                      
+                       <input className="input" id="inputName" ref="name" type="text" readonly="readonly" defaultValue={`${store.getState().name}`} ></input>
+                       <input className="input" id="inputName" ref="lastname" type="text" readonly="readonly" defaultValue={`${store.getState().lastname}`} ></input>
                     </div>
-                   
-	                    
-						<input id="inputPapa"type="number" ref="PAPA" placeholder="Ingrese su PAPA" min="0" max="5" readonly="readonly"  defaultValue={`${store.getState().PAPA}`}></input><br/>
-						<input  id="inputPbm" type="number" ref="PBM" placeholder = "Ingrese su PBM" min="0"  readonly="readonly" defaultValue={`${store.getState().PBM}`}></input><br/>
+                   <label>Dependencia:</label>
+	                    <select ref="selectDependence" disabled>
+											{ this.state.dependences.map((dependence)=>
+												<option value={dependence._id} >{dependence.name}</option>)}
+													)}
+						
+											</select><br/>
+											<label>Pregrado/Postgrado:</label>
+											<select ref="selectLevel" disabled>
+												<option value="pregrado">Pregrado</option>
+												<option value="postgrado">Postgrado</option>
+						
+											</select><br/>
+						{/*<input className="input"id="inputPapa"type="number" ref="PAPA" placeholder="Ingrese su PAPA" min="0" max="5" readonly="readonly"  defaultValue={`${store.getState().PAPA}`}></input><br/>
+												<input  className="input"id="inputPbm" type="number" ref="PBM" placeholder = "Ingrese su PBM" min="0"  readonly="readonly" defaultValue={`${store.getState().PBM}`}></input><br/>*/}
 						
 						
 					

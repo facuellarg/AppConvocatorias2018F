@@ -43,6 +43,7 @@ export class Background extends Component{
      if (localStorage.getItem('token')) {
       obtenerDatos(localStorage.getItem('token')).then((users) => {
         this.setState({ s_users: users })
+        console.log(this.state.s_users)
       })
     }
   }
@@ -50,12 +51,16 @@ export class Background extends Component{
 
 	render(){
 		if (localStorage.getItem('token')) {
+            console.log("USUARIO :"+this.state)
    
     store.dispatch({
          type: "ADD_TO_STORE",
          id: this.state.s_users.id,
          name: this.state.s_users.name,
+         lastname: this.state.s_users.lastname,
+         level: this.state.s_users.level,
          email: this.state.s_users.email,
+         dependence_id: this.state.s_users.dependence_id,
          PAPA: this.state.s_users.PAPA,
          PBM: this.state.s_users.PBM,
      })}
