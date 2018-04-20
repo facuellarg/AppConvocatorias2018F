@@ -3,49 +3,52 @@ import convocatoriaStore from './convocatoriaStore'
 import store from './store.js'
 
 export class ConvocatoriaDetalles extends Component{
-	constructor(props){
-		super(props)
+	constructor(){
+		super()
 		this.state = {convocation:[]}
+	}
+	componentWillMount(){
+		this.setState({convocation:JSON.parse(localStorage.getItem('convocation'))})
+			
 	}
 
 	render(){
-		console.log(store.getState())
 		return(
 			<div>
 				<div className="col-md-6" style={{ textAlign:'right'}}>
 				<section>
-				<h3>Nombre de la conovocatoria:{`${convocatoriaStore.getState().name}`}</h3>
+				<h3>Nombre de la conovocatoria:{`${this.state.convocation.name}`}</h3>
 				</section>
 				<section>
-				<h3>Descripcion de la conovocatoria: {`${convocatoriaStore.getState().description}`}</h3>
+				<h3>Descripcion de la conovocatoria: {`${this.state.convocation.description}`}</h3>
 				</section>
 				<section>
-				<h3>Para estudiantes de: {`${convocatoriaStore.getState().level}`}</h3>
+				<h3>Para estudiantes de: {`${this.state.convocation.level}`}</h3>
 				</section>
 				<section>
-				<h3>Finaliza el: {`${convocatoriaStore.getState().end_date}`}</h3>
+				<h3>Finaliza el: {`${this.state.convocation.end_date}`}</h3>
 				</section>
 				<section>
-				<h3>Responsable de la Convocatoria: {`${convocatoriaStore.getState().admin.name}`}</h3>
+				<h3>Responsable de la Convocatoria: {`${this.state.convocation.admin.name}`}</h3>
 				</section>
 				<section>
-				<h3>Vacantes: {`${convocatoriaStore.getState().vacants}`}</h3>
+				<h3>Vacantes: {`${this.state.convocation.vacants}`}</h3>
 				</section>
 				<section>
-				<h3>Disponibilidad de tiempo requerida: {`${convocatoriaStore.getState().hours_per_week}`}</h3>
+				<h3>Disponibilidad de tiempo requerida: {`${this.state.convocation.hours_per_week}`}</h3>
 				</section>
 				<section>
-				<h3> Estímulo económico mensual: $ {`${convocatoriaStore.getState().payout}`}</h3>
+				<h3> Estímulo económico mensual: $ {`${this.state.convocation.payout}`}</h3>
 				</section>
 				<section>
-				<h3>Duración de la vinculación: {`${convocatoriaStore.getState().vacants}`}</h3>
+				<h3>Duración de la vinculación: {`${this.state.convocation.vacants}`}</h3>
 				</section>
 				</div>
 				<div className="col-md-6">
 				<section>
 				<h3>Requisitos Generales:</h3>
 				
-					{convocatoriaStore.getState().requeriments.map((requeriment)=>
+					{this.state.convocation.requirements.map((requeriment)=>
 						<li>{requeriment.description}</li>
 						)}
 		
@@ -53,7 +56,7 @@ export class ConvocatoriaDetalles extends Component{
 				<section>
 				<h3>Dependencias:</h3>
 			
-					{convocatoriaStore.getState().dependences.map((dependence)=>
+					{this.state.convocation.dependences.map((dependence)=>
 						<li>{dependence.name}</li>
 						)}
 				
@@ -61,7 +64,7 @@ export class ConvocatoriaDetalles extends Component{
 				<section>
 				<h3>Perfil:</h3>
 			
-					{convocatoriaStore.getState().profile.map((prof)=>
+					{this.state.convocation.profiles.map((prof)=>
 						<li>{prof.description}</li>
 						)}
 				
@@ -69,7 +72,7 @@ export class ConvocatoriaDetalles extends Component{
 				<section>
 				<h3>Actividades a realizar:</h3>
 			
-					{convocatoriaStore.getState().activities.map((activity)=>
+					{this.state.convocation.activities.map((activity)=>
 						<li>{activity.description}</li>
 						)}
 				
@@ -77,7 +80,7 @@ export class ConvocatoriaDetalles extends Component{
 				<section>
 				<h3>Archivos requeridos:</h3>
 			
-					{convocatoriaStore.getState().required_files.map((required_file)=>
+					{this.state.convocation.required_files.map((required_file)=>
 						<li>{required_file.name}</li>
 						)}
 				

@@ -157,7 +157,7 @@ export class Convocatorias extends Component{
 	async handleOnClickVerDetalles(e){
 
 		const convocation = this.state.convocations[e.target.id]
-		 localStorage.setItem('convocatoria', this.state.convocations[e.target.id])
+		 localStorage.setItem('convocation', JSON.stringify(convocation))
 
 	}
 	handlePageChange(pageNumber) {
@@ -287,7 +287,7 @@ export class Convocatorias extends Component{
 	  		this.state.data.maxPayout= this.refs.maxPayout.value;
 	  	}else{this.state.data.minPayout= this.state.base.minPayout;
 	  				this.state.data.maxPayout= this.state.base.maxPayout;}
-  	console.log((JSON.stringify(this.state.data)))
+  	
   }
 
 	render(){
