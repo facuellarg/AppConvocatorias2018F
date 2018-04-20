@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
 
+
 const newReducer = (state,action) => {
     if(action.type === "ADD_TO_STORE"){
         return{

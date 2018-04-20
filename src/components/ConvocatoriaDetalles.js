@@ -3,6 +3,7 @@ import convocatoriaStore from './convocatoriaStore'
 import store from './store.js'
 import {Url} from './Url.js'
 import PropTypes from "prop-types";
+import {Forbbiden} from './Forbbiden'
 
 export class ConvocatoriaDetalles extends Component{
 	static contextTypes = {
@@ -13,15 +14,19 @@ export class ConvocatoriaDetalles extends Component{
 			this.state = {convocation:[]}
 	}
 	componentWillMount(){
+		if(!localStorage.getItem('token')){
+			 return;
+		}	
 		this.setState({convocation:JSON.parse(localStorage.getItem('convocation'))})
-			
+		
 	}
 	handleOnClickAtras(){
 		this.context.router.history.push("/MiCuenta")
 	}
 
 	render(){
-		return(
+			if(localStorage.getItem('token')){
+				return(
 			<div>
 				<div className="col-md-6" style={{ textAlign:'right'}}>
 				<section>
@@ -108,5 +113,6 @@ export class ConvocatoriaDetalles extends Component{
 			</div>
 			
 				)
+			}else{return(<Forbbiden/>)}
 			}
 }

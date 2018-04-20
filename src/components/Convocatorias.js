@@ -15,7 +15,7 @@ import './css/convocatoria.css'
 export class Convocatorias extends Component{
 	constructor(){
 		super()
-		this.state={currentPage :1, pages :0, itemsPeerPage:7, convocations:[], verdetalle:0}
+		this.state={currentPage :1, pages :0, itemsPeerPage:10, convocations:[], verdetalle:0}
 	}
 
 	
@@ -50,7 +50,7 @@ export class Convocatorias extends Component{
 				let jsonResponse = await response.json();
 
 				this.setState({pages:jsonResponse.pages,convocations:jsonResponse.convocations})
-				console.log(jsonResponse.convocations.length);
+				console.log(jsonResponse);
 				return
 			}
 			throw new Error("No se pudo obtener las convocatorias");
