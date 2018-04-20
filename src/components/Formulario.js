@@ -3,6 +3,7 @@ import {LoginForm} from './LoginForm.js'
 import {RegistForm} from './RegistForm.js'
 import {obtenerDatos} from './obtenerDatos.js'
 import {MiCuenta} from './MiCuenta.js'
+import { Link } from 'react-router-dom';
 
 
 
@@ -56,8 +57,9 @@ export class Formulario extends Component{
 		
 	render(){
 		console.log(this.state.isLogged)
-		if (this.state.isLogged === 0){
-			let a = this.state.login === 1 ? <LoginForm onChange={this.changeLogged}/> : <RegistForm/>
+		
+		
+					let a = this.state.login === 1 ? <LoginForm onChange={this.changeLogged}/> : <RegistForm/>
 			return(
 				<div style={{textAlign: 'center'}} >
 					<div className="btn-group" style={{width: '100'}}>
@@ -67,13 +69,8 @@ export class Formulario extends Component{
 					{a}
 				</div>
 			)
-		}else{
-			return(
-				<div className="container-fluid">
-					<MiCuenta />
-				</div>
-			)
-		}		
+
+		
 	};
 
 

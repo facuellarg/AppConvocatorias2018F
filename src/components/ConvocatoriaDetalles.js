@@ -1,15 +1,23 @@
 import React,{Component} from 'react';
 import convocatoriaStore from './convocatoriaStore'
 import store from './store.js'
+import {Url} from './Url.js'
+import PropTypes from "prop-types";
 
 export class ConvocatoriaDetalles extends Component{
-	constructor(){
-		super()
-		this.state = {convocation:[]}
+	static contextTypes = {
+    router: PropTypes.object
+	  }
+	  constructor(props, context) {
+     super(props, context);
+			this.state = {convocation:[]}
 	}
 	componentWillMount(){
 		this.setState({convocation:JSON.parse(localStorage.getItem('convocation'))})
 			
+	}
+	handleOnClickAtras(){
+		this.context.router.history.push("/MiCuenta")
 	}
 
 	render(){
@@ -90,8 +98,8 @@ export class ConvocatoriaDetalles extends Component{
 				<div className="row" style={{ textAlign:'center'}}>
 					<div className="btn-group" >
 						<button className="btn-default">Agregar Convocatoria</button>
-						<button className="btn-default">Generar PDF</button>
-						<button className="btn-default">Atras PDF</button>
+						<button className="btn-default"><a href={`${Url}convocations/${this.state.convocation.id}.pdf`} target="_blank">Generar PDF</a></button>
+						<button className="btn-default" onClick="{this.handleOnClickAtras.bind(this)}">Atras</button>
 
 					</div>
 				</div>

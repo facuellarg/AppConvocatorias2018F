@@ -4,6 +4,9 @@ import { render } from 'react-dom';
 import firebase from 'firebase';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+
+
+
 // Routes
 import App from './components/routes.js';
 
@@ -21,7 +24,7 @@ firebase.initializeApp({
 
 
 render(
-  <Router>
+  <Router >
   
     <App />
    

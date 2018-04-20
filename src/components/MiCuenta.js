@@ -17,6 +17,7 @@ constructor(){
 
 
 	async componentWillMount(){
+
 	// await this.setState({dependences:dependences})
 	// peticion para tener todas las dependencias
 			const options ={
@@ -38,13 +39,13 @@ constructor(){
 
 			await this.setState({dependences:a})
 			return;
-		}
+	}
 	
 	throw new Error('No se pudieron cargar las dependencias')
 	}catch(error){
 		console.log(error.message)
 	}	
-
+	console.log("Redux: "+store.getState())
 
 }
 componentDidMount(){
@@ -57,6 +58,7 @@ onClickActualizar(){
 		this.refs.selectDependence.removeAttribute('disabled');
 		this.refs.selectLevel.removeAttribute('disabled');
 		this.refs.name.removeAttribute("readonly");
+		this.refs.lastname.removeAttribute("readonly");
 		this.refs.selectDependence.focus();
 	}
 
@@ -91,8 +93,10 @@ onClickActualizar(){
 			console.log(jsonResponse);
 			if(response.ok){
 				alert("Datos Actualizados");
-			
-				document.location.reload()
+				this.refs.selectDependence.setAttribute('disabled','disabled');
+				this.refs.selectLevel.setAttribute('disabled','disabled');
+				this.refs.name.setAttribute("readonly","readonly");
+				this.refs.lastname.setAttribute("readonly","readonly");
 				return
 			}
 			throw new Error((jsonResponse));
@@ -104,6 +108,7 @@ onClickActualizar(){
 	}	
 
 render() {
+	console.log("Redux: "+Array.from(store.getState()))
      return(
     <div style={{ marginTop: `${50}px`, marginBottom: `${60}px`}}>
       <h1 className="page-title" id="miCuenta" style={{textAlign: 'center'}}>Mi cuenta</h1> 
