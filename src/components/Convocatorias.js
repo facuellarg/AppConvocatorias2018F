@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
-import {convocatoriaStore} from './convocatoriaStore.js'
+import {ConvocatoriaDetalles} from './ConvocatoriaDetalles.js'
+import convocatoriaStore from './convocatoriaStore.js'
 import {Url} from './Url.js'
 
 import Pagination from "react-js-pagination";
@@ -13,7 +14,7 @@ import './css/convocatoria.css'
 export class Convocatorias extends Component{
 	constructor(){
 		super()
-		this.state={currentPage :1, pages :20, itemsPeerPage:7, convocations:[], data:{}, base:{}}
+		this.state={currentPage :1, pages :0, itemsPeerPage:7, convocations:[], verdetalle:0}
 	}
 	// async componentWillMount(){
 	// 	this.setState({base:{"level":"",
@@ -117,6 +118,9 @@ export class Convocatorias extends Component{
 
 	async componentWillMount(){
 
+		if(!localStorage.getItem('token')){
+			 window.location = '/Forbbiden';
+		}
 		const data1 = JSON.stringify(
 			{
 				page:1
@@ -140,7 +144,7 @@ export class Convocatorias extends Component{
 			
 			if(response.ok){
 				let jsonResponse = await response.json();
-				this.setState({convocations:jsonResponse})
+				this.setState({convocations:jsonResponse.convocations})
 				console.log(this.state.convocations)
 				return
 			}
@@ -150,27 +154,11 @@ export class Convocatorias extends Component{
 
 		}
 	}
-	handleOnClickVerDetalles(e){
-		const convocation = this.state.convocations.convocations[e.target.id]
-		alert(e.target.id);
-		convocatoriaStore.dispatch({
-        type: "ADD_TO_STORE",
-        id: convocation.id,
-        name: convocation.name,
-        description: convocation.description,
-        level: convocation.level,
-        end_date: convocation.end_date,
-        admin: convocation.admin,
-        vacants: convocation.vacants,
-        hours_per_week: convocation.hours_per_week,
-        payout: convocation.payout,
-        duration: convocation.PBM,
-        requeriments: Array.from(convocation.requeriments),
-        dependences: Array.from(convocation.dependences),
-        profile: Array.from(convocation.profile),
-        activities: Array.from(convocation.activities),
-        required_files: Array.from(convocation.required_files),
-     })
+	async handleOnClickVerDetalles(e){
+
+		const convocation = this.state.convocations[e.target.id]
+		 localStorage.setItem('convocatoria', this.state.convocations[e.target.id])
+
 	}
 	handlePageChange(pageNumber) {
   //   const data = JSON.stringify(
@@ -397,7 +385,7 @@ export class Convocatorias extends Component{
 					</tr>
 				</thead>
 				<tbody>
-					{/*this.state.convocations.convocations.map(
+					{this.state.convocations.map(
 		                (conovocation,index) => <tr  key={conovocation.id}>
 		                <td >{conovocation.level}</td>
 		                <td >{conovocation.name}</td>
@@ -411,7 +399,7 @@ export class Convocatorias extends Component{
 		                 <td>{conovocation.end_date}</td>
 		                 <td ><Link id={index} onClick={this.handleOnClickVerDetalles.bind(this)}to="/verdetalles">Ver detalles</Link></td>
 		                 </tr>
-		              		)*/}
+		              		)}
 
 				</tbody>
 			</table>

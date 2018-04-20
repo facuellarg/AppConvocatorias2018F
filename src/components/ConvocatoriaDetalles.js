@@ -1,10 +1,15 @@
 import React,{Component} from 'react';
-import {convocatoriaStore} from './convocatoriaStore.js'
+import convocatoriaStore from './convocatoriaStore'
+import store from './store.js'
 
 export class ConvocatoriaDetalles extends Component{
+	constructor(props){
+		super(props)
+		this.state = {convocation:[]}
+	}
 
 	render(){
-
+		console.log(store.getState())
 		return(
 			<div>
 				<div className="col-md-6" style={{ textAlign:'right'}}>
@@ -83,6 +88,8 @@ export class ConvocatoriaDetalles extends Component{
 					<div className="btn-group" >
 						<button className="btn-default">Agregar Convocatoria</button>
 						<button className="btn-default">Generar PDF</button>
+						<button className="btn-default">Atras PDF</button>
+
 					</div>
 				</div>
 				</div>

@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 
-const newReducer = (state,action) => {
+const reducer = (state,action) => {
     if(action.type === "ADD_TO_STORE"){
         return{
             ...state,
@@ -24,6 +24,6 @@ const newReducer = (state,action) => {
     return state;
 };
 
-export default createStore(newReducer, {id: "",name: "",description: "",level: ""
+export default  createStore(reducer, {id: "",name: "",description: "",level: ""
     ,end_date:0,admin:[],vacants:0,hours_per_week: 0,payout: 0,duration: 0,requeriments: [],
 dependences:[],profile:[],activities:[],required_files:[]});

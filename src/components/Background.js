@@ -51,8 +51,7 @@ export class Background extends Component{
 
 	render(){
 		if (localStorage.getItem('token')) {
-            console.log("USUARIO :"+this.state)
-   
+           
     store.dispatch({
          type: "ADD_TO_STORE",
          id: this.state.s_users.id,

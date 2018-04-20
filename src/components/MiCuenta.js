@@ -4,16 +4,49 @@ import './css/cuenta.css';
 import { Link } from 'react-router-dom';
 import store from './store';
 import {Url} from './Url'
-import dependences from './js/dependences.js'
+
 
 
 export class MiCuenta extends Component{
 constructor(){
 		super()
-		this.state = {email: store.getState().email , dependences:dependences}
+		this.state = {email: store.getState().email , dependences:[]}
 		this.onClickActualizar = this.onClickActualizar.bind(this);
 		this.onClickGuardar = this.onClickGuardar.bind(this);
 	}
+
+
+	async componentWillMount(){
+	// await this.setState({dependences:dependences})
+	// peticion para tener todas las dependencias
+			const options ={
+				method: 'GET',
+		    headers: {
+		        'Accept': 'application/json',
+	          'Content-Type': 'application/json',
+		       }
+			}
+	try{
+		let response =  await fetch(Url+'/dependences', options);
+		let jsonResponse = response.json();
+		if(response.ok){
+			let a;
+			await jsonResponse.then(function(value) {
+				   a = value;
+
+				});
+
+			await this.setState({dependences:a})
+			return;
+		}
+	
+	throw new Error('No se pudieron cargar las dependencias')
+	}catch(error){
+		console.log(error.message)
+	}	
+
+
+}
 componentDidMount(){
 	this.refs.selectDependence.value = store.getState().dependence_id;
 }
@@ -51,7 +84,7 @@ onClickActualizar(){
 	      	})
 
 		}
-
+		console.log(options.body);
 		try{
 			let response = await fetch(`${Url}/users/${store.getState().id}`, options);
 			let jsonResponse = await response.json();
@@ -101,7 +134,7 @@ render() {
                    <label>Dependencia:</label>
 	                    <select ref="selectDependence" disabled>
 											{ this.state.dependences.map((dependence)=>
-												<option value={dependence._id} >{dependence.name}</option>)}
+												<option value={dependence.id} >{dependence.name}</option>)}
 													)}
 						
 											</select><br/>
