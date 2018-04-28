@@ -1,0 +1,13 @@
+.list-group{
+    text-align: left;
+    font-size: 1.3em;
+    max-height: 300px;
+    margin-bottom: 10px;
+    border:#3c3c3c;
+    background: #dddddd;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+
+}
+
+

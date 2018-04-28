@@ -8,7 +8,8 @@ export class SignOut extends Component{
 	}
 onClickCerrarSesion(){
 		localStorage.clear();
-		setTimeout(function(){document.location.reload()},1000);
+		// setTimeout(function(){document.location.reload()},1000);
+		document.location.reload()
 	}
 	
 

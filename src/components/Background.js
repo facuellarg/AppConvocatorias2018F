@@ -4,7 +4,8 @@ import{Header} from './Header.js';
 import {Footer} from './Footer.js'
 import {Content} from './Content'
 import items from './menu.js';
-
+import store from './store.js'
+import PropTypes from 'prop-types';
 import {obtenerDatos} from './obtenerDatos.js'
 
 
@@ -37,22 +38,49 @@ import escudoUnal_black from './images/escudoUnal_black.png';
 export class Background extends Component{
 	constructor(props){
 		super(props);
-		this.state = {  s_users: []}
+		this.state = {  s_users: {}}
 	}
 
-	componentWillMount(){
+	async componentWillMount(){
+
      if (localStorage.getItem('token')) {
-      obtenerDatos(localStorage.getItem('token')).then((users) => {
-        this.setState({ s_users: users })
-        
-      })
+      let user =  (obtenerDatos(localStorage.getItem('token')));
+      let a;
+      await user.then(function(value) {
+        a = value
+
+      });
+
+      this.setState({ s_users: a})
+
+    
     }
   }
+  static propTypes = {
+    children: PropTypes.object.isRequired
+  };
+    async updateRedux(){
+       const body ={
+                     type: "ADD_TO_STORE",
+                     id: this.state.s_users.id,
+                     name: this.state.s_users.name,
+                     lastname: this.state.s_users.lastname,
+                     level: this.state.s_users.level,
+                     email: this.state.s_users.email,
+                     dependence_id: this.state.s_users.dependence_id,
 
+           
+                 }
+         if(localStorage.getItem('token')){
+            await store.dispatch(body)}
+        }
 
 	render(){
-	   
-			const { children } = this.props;
+
+    this.updateRedux()
+    const { children } = this.props;
+    console.log("HOla")
+			
     return (
      
         <body>

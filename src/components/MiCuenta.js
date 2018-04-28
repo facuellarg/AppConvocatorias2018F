@@ -1,64 +1,32 @@
 import React, {Component} from 'react';
-
 import './css/cuenta.css';
 import { Link } from 'react-router-dom';
 import store from './store';
-import {Url} from './Url'
+import {Url} from './Url';
 
 
 
 export class MiCuenta extends Component{
-constructor(){
-		super()
-		this.state = {email: store.getState().email , dependences:[]}
+constructor(props){
+		super(props)
+		this.state = {}
+
 		this.onClickActualizar = this.onClickActualizar.bind(this);
 		this.onClickGuardar = this.onClickGuardar.bind(this);
 	}
 
 
-	async componentWillMount(){
 
-	// await this.setState({dependences:dependences})
-	// peticion para tener todas las dependencias
-			const options ={
-				method: 'GET',
-		    headers: {
-		        'Accept': 'application/json',
-	          'Content-Type': 'application/json',
-		       }
-			}
-	try{
-		let response =  await fetch(Url+'/dependences', options);
-		let jsonResponse = response.json();
-		if(response.ok){
-			let a;
-			await jsonResponse.then(function(value) {
-				   a = value;
 
-				});
-
-			await this.setState({dependences:a})
-			return;
-	}
-	
-	throw new Error('No se pudieron cargar las dependencias')
-	}catch(error){
-		console.log(error.message)
-	}	
-	console.log("Redux: "+store.getState())
-
-}
-componentDidMount(){
-	this.refs.selectDependence.value = store.getState().dependence_id;
-}
 
 
 onClickActualizar(){
-		
+	
+
 		this.refs.selectDependence.removeAttribute('disabled');
 		this.refs.selectLevel.removeAttribute('disabled');
-		this.refs.name.removeAttribute("readonly");
-		this.refs.lastname.removeAttribute("readonly");
+		this.refs.name.removeAttribute("readOnly");
+		this.refs.lastname.removeAttribute("readOnly");
 		this.refs.selectDependence.focus();
 	}
 
@@ -86,7 +54,7 @@ onClickActualizar(){
 	      	})
 
 		}
-		console.log(options.body);
+
 		try{
 			let response = await fetch(`${Url}/users/${store.getState().id}`, options);
 			let jsonResponse = await response.json();
@@ -95,8 +63,8 @@ onClickActualizar(){
 				alert("Datos Actualizados");
 				this.refs.selectDependence.setAttribute('disabled','disabled');
 				this.refs.selectLevel.setAttribute('disabled','disabled');
-				this.refs.name.setAttribute("readonly","readonly");
-				this.refs.lastname.setAttribute("readonly","readonly");
+				this.refs.name.setAttribute("readOnly","readOnly");
+				this.refs.lastname.setAttribute("readOnly","readOnly");
 				return
 			}
 			throw new Error((jsonResponse));
@@ -108,8 +76,10 @@ onClickActualizar(){
 	}	
 
 render() {
-	console.log("Redux: "+Array.from(store.getState()))
-     return(
+    console.log("Render")
+
+    return(
+
     <div style={{ marginTop: `${50}px`, marginBottom: `${60}px`}}>
       <h1 className="page-title" id="miCuenta" style={{textAlign: 'center'}}>Mi cuenta</h1> 
 
@@ -132,13 +102,13 @@ render() {
                   </div>
                   <div className="col-sm-4 padding-profile">
                     <div className="caja">
-                    	 <h4 id="correo" className="s-property-title">Correo: {this.state.email}</h4>
-                       <input className="input" id="inputName" ref="name" type="text" readonly="readonly" defaultValue={`${store.getState().name}`} ></input>
-                       <input className="input" id="inputName" ref="lastname" type="text" readonly="readonly" defaultValue={`${store.getState().lastname}`} ></input>
+                    	  <h4 id="correo" ref="email" className="s-property-title">{`${store.getState().email}`}</h4>
+					<input className="input" id="inputName" ref="name" type="text" readOnly="readOnly" defaultValue={`${store.getState().name}`} ></input>
+                       <input className="input" id="inputName" ref="lastname" type="text" readOnly="readOnly" defaultValue={`${store.getState().lastname}`}></input>
                     </div>
                    <label>Dependencia:</label>
 	                    <select ref="selectDependence" disabled>
-											{ this.state.dependences.map((dependence)=>
+											{ this.props.dependences.map((dependence)=>
 												<option value={dependence.id} >{dependence.name}</option>)}
 													)}
 						
@@ -149,16 +119,16 @@ render() {
 												<option value="postgrado">Postgrado</option>
 						
 											</select><br/>
-						{/*<input className="input"id="inputPapa"type="number" ref="PAPA" placeholder="Ingrese su PAPA" min="0" max="5" readonly="readonly"  defaultValue={`${store.getState().PAPA}`}></input><br/>
-												<input  className="input"id="inputPbm" type="number" ref="PBM" placeholder = "Ingrese su PBM" min="0"  readonly="readonly" defaultValue={`${store.getState().PBM}`}></input><br/>*/}
+						{/*<input className="input"id="inputPapa"type="number" ref="PAPA" placeholder="Ingrese su PAPA" min="0" max="5" readOnly="readOnly"  defaultValue={`${store.getState().PAPA}`}></input><br/>
+												<input  className="input"id="inputPbm" type="number" ref="PBM" placeholder = "Ingrese su PBM" min="0"  readOnly="readOnly" defaultValue={`${store.getState().PBM}`}></input><br/>*/}
 						
 						
 					
 						
 
 					<div  className="btn-gruop">
-					<button id ="botonGuardar" className="btn btn-default" onClick={this.onClickActualizar} >Actualizar</button>
-					<button id ="botonCerrar" className="btn btn-default" onClick={this.onClickGuardar} ref="guardar" >Guardar</button>
+					<button id ="botonGuardar" className="btn btn-default" onClick={this.onClickActualizar} >Modificar Datos</button>
+					<button id ="botonCerrar" className="btn btn-default" onClick={this.onClickGuardar} ref="guardar" >Guardar Cambios</button>
 						
 				   	</div>  	
                   </div>  
@@ -171,6 +141,7 @@ render() {
     </div>  
       
       );
-    }
+    
 
+}
 }

@@ -13,21 +13,18 @@ import App from './components/routes.js';
 
 firebase.initializeApp({
 
-	apiKey: "AIzaSyAwoM5rgr1lVdAgvuGgkB3RXxyXQF-MOQw",
-	authDomain: "fotos-7f2f9.firebaseapp.com",
-	databaseURL: "https://fotos-7f2f9.firebaseio.com",
-	projectId: "fotos-7f2f9",
-	storageBucket: "fotos-7f2f9.appspot.com",
-	messagingSenderId: "288744483583"
-              
+    apiKey: "AIzaSyDM-RFm2TB8UlMZ3PPHq2iaor2mQ_ETpio",
+    authDomain: "ingsoft2frontnacional.firebaseapp.com",
+    databaseURL: "https://ingsoft2frontnacional.firebaseio.com",
+    projectId: "ingsoft2frontnacional",
+    storageBucket: "",
+    messagingSenderId: "723198454367"
 });
 
 
 render(
   <Router >
-  
     <App />
-   
   </Router>,
   document.getElementById('root')
 );

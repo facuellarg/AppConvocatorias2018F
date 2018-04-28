@@ -2,18 +2,23 @@ import React, {Component} from 'react';
 import {LoginForm} from './LoginForm.js'
 import {RegistForm} from './RegistForm.js'
 import {obtenerDatos} from './obtenerDatos.js'
-import {MiCuenta} from './MiCuenta.js'
-import { Link } from 'react-router-dom';
+import PropTypes from "prop-types";
+import firebase from 'firebase';
 
 
 
 export class Formulario extends Component{
-	constructor(props){
-		super(props);
-		this.state={login:1, isLogged: 0, s_users: []};
+	static contextTypes = {
+    router: PropTypes.object
+	  }
+	  constructor(props, context) {
+     super(props, context);
+		this.state={login:1, isRegisted: 0, s_users:[]};
 		this.handlerOnclickLogin = this.handlerOnclickLogin.bind(this);
 		this.handlerOnclickRegistro = this.handlerOnclickRegistro.bind(this);
-		this.changeLogged = this.changeLogged.bind(this);
+		this.changeRegisted = this.changeRegisted.bind(this);
+		this.handleOnClickWithGoogle = this.handleOnClickWithGoogle.bind(this);
+		this.hanledSignOut = this.hanledSignOut.bind(this)
 		// this.handleOnSubmitLogin = this.handleOnSubmitLogin.bind(this);
 		
 		// this.handleOnSubmitRegistro = this.handleOnSubmitRegistro.bind(this);
@@ -22,19 +27,18 @@ export class Formulario extends Component{
 		componentWillMount(){
 
 			if (localStorage.getItem('token')) {
-      obtenerDatos(localStorage.getItem('token')).then((users) => {
-        this.setState({ s_users: users })
-        this.setState({isLogged:1})
-        console.log(this.state.isLogged)
+			  obtenerDatos(localStorage.getItem('token')).then((users) => {
+				this.context.router.history.push("/MiCuenta")
+     
 	      })
 
 	    }else{this.setState({isLogged:0})}
-			console.log(this.state.isLogged)
+
 
 		}
 	
 	handlerOnclickLogin(){
-		document.getElementById('botonIniciarSesion').setAttribute("class", "btn btn-info");
+		document.getElementById('botonIniciarSesion').setAttribute("class", "btn btn-success");
 		document.getElementById('botonRegistro').setAttribute("class", "btn btn-default");
 		this.setState({
 			login:1
@@ -42,31 +46,80 @@ export class Formulario extends Component{
 	}
 
 	handlerOnclickRegistro(){
-		document.getElementById('botonRegistro').setAttribute("class", "btn btn-info");
+		document.getElementById('botonRegistro').setAttribute("class", "btn btn-success");
 		document.getElementById('botonIniciarSesion').setAttribute("class", "btn btn-default");
 		this.setState({
 			login:0
 		})
 	}
+    handleOnClickWithGoogle(){
+		console.log("Hola")
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+			.then(result => {
+                var re = /[a-zA-Z]+@+unal.edu.co/;
 
-	changeLogged(Logged) {
-    this.setState({
-      isLogged: Logged
-    });
+				if(re.test(result.user.email)){
+                    this.setState({s_users: result.user})
+
+                    return;
+				}else{
+					alert("Correo no institucional")
+                    firebase.auth().signOut()
+                        .then(()=>{
+                            this.setState({s_users :null})
+
+                            return;
+                        })
+                        .catch(error => console.log(error.message))
+				}
+
+
+			})
+			.catch(error => alert(error.message + "  " + error.code))
+
+	}
+	hanledSignOut(){
+
+
+		firebase.auth().signOut()
+			.then(()=>{
+                this.setState({s_users :null})
+
+				return;
+			})
+			.catch(error => console.log(error.message))
+	}
+
+	changeRegisted(Logged) {
+		this.refs.login.click();
 	}
 		
 	render(){
-		console.log(this.state.isLogged)
+		console.log(this.state.s_users)
 		
 		
-					let a = this.state.login === 1 ? <LoginForm onChange={this.changeLogged}/> : <RegistForm/>
+					let a = this.state.login === 1 || this.state.isRegisted === 1 ? <LoginForm /> : <RegistForm onChange={this.changeRegisted}/>
 			return(
-				<div style={{textAlign: 'center'}} >
-					<div className="btn-group" style={{width: '100'}}>
-						<button id="botonIniciarSesion" type="button" onClick={this.handlerOnclickLogin} className="btn btn-info" style={{width: '50'}} >Iniciar sesion</button>
-						<button id="botonRegistro" type="button" className="btn btn-default" onClick={this.handlerOnclickRegistro}  style={{width: '50'}}>Registrarse</button><br/>
-					</div><br/>
-					{a}
+				<div align="center" >
+                    <div className="col-md-4 col-md-offset-4">
+                        <button className="btn btn-block btn-social btn-google google" onClick={this.handleOnClickWithGoogle}>
+                            <span className="fa fa-google"></span> Inicia sesion con tu correo institucional
+                        </button>
+						{/*<button className="btn btn-block btn-social btn-google " onClick={this.hanledSignOut}>
+                            <span className="fa fa-twitter"></span> salir por ahora
+                        </button>*/}
+					<div className="col-md-12">
+                        <h4 className="word-with-line"><span className="word"> Ò </span></h4>
+					</div>
+                    </div>
+					<div className="col-md-12" align="center">
+                        <div className="btn-group " >
+                            <button id="botonIniciarSesion" ref="login"type="button" onClick={this.handlerOnclickLogin} className="btn btn-success" style={{width: '50'}} >Iniciar sesion</button>
+                            <button id="botonRegistro" type="button" className="btn btn-default" onClick={this.handlerOnclickRegistro}  style={{width: '50'}}>Registrarse</button><br/>
+                        </div><br/>
+                        {a}
+					</div>
 				</div>
 			)
 

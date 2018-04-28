@@ -3,7 +3,6 @@ import {Url} from './Url.js'
 import {obtenerDatos} from './obtenerDatos.js'
 import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
-import store from './store';
 
 
 export class LoginForm extends Component{
@@ -11,12 +10,10 @@ export class LoginForm extends Component{
     router: PropTypes.object
 	  }
 	  constructor(props, context) {
-     super(props, context);
-		this.state={isLogged:0};
-
+		 super(props, context);
+		this.state={isLogged:0, data:null};
 		this.handleOnSubmitLogin = this.handleOnSubmitLogin.bind(this);
-
-		}
+	  }
 
   validateEmail(email) {
     var re = /[a-zA-Z]+@+unal.edu.co/;
@@ -29,14 +26,13 @@ export class LoginForm extends Component{
 		
 		e.preventDefault();
 
-		const email = this.refs.email.value;
+		const email = this.refs.email.value.toLowerCase();
 		const password = this.refs.password.value;
 		const data = JSON.stringify(
 			{
 				"auth":{"email":email,"password":password}
 			}
-			)
-		
+		)	
 		const options={
 			method: 'POST',
 			headers: {
@@ -51,61 +47,100 @@ export class LoginForm extends Component{
 			alert("el correo debe ser un correo de la universidad nacional (example@unal.edu.co)")
 			return;
 		}
-		try{
-			let response = await fetch(Url+'/user_token', options);
-			
-			if(response.ok){
-				let jsonResponse = await response.json();
-				let n = await obtenerDatos(jsonResponse.jwt)
-				await localStorage.setItem('token', jsonResponse.jwt);
-				this.props.onChange(1);
+		
+		fetch(Url+'/user_token',
+			options).then(response=>{
+				if(response.ok){
+						return response.json()
+					}
+					throw new Error("Error en el usuario o contraseña")
+				},
+					error => alert(error.code)
+					).then(jsonResponse=>{
+						let n = obtenerDatos(jsonResponse.jwt)
+						console.log(n.name)
+						localStorage.setItem('token', jsonResponse.jwt);
+						this.context.router.history.push("/MiCuenta")
+                        window.location.reload()
+								})
+
+
+						
+			// if(response.ok){
+			// 	let jsonResponse = await response.json();
+			// 	// let n = await obtenerDatos(jsonResponse.jwt)
+			// 	localStorage.setItem('token', jsonResponse.jwt);
+			// 	this.context.router.history.push("/MiCuenta")
+			// 	return
+
+				
 			
 				//console.log(jsonResponse);
-				alert(`Bienvenido ${n.name}`)
+				// alert(`Bienvenido ${n.name}`)
 				
-				if(localStorage.getItem('token')){
-        store.dispatch({
-                 type: "ADD_TO_STORE",
-                 id: n.id,
-                 name: n.name,
-                 lastname: n.lastname,
-                 level: n.level,
-                 email: n.email,
-                 dependence_id: n.dependence_id,
-                 PAPA: n.PAPA,
-                 PBM: n.PBM,
-             })
-        console.log(this.state.s_users)
-       }
+				// if(localStorage.getItem('token')){
+    //     store.dispatch({
+    //              type: "ADD_TO_STORE",
+    //              id: n.id,
+    //              name: n.name,
+    //              lastname: n.lastname,
+    //              level: n.level,
+    //              email: n.email,
+    //              dependence_id: n.dependence_id,
+    //              PAPA: n.PAPA,
+    //              PBM: n.PBM,
+    //          })
+       //  console.log(this.state.s_users)
+       // }
 
-
-				this.context.router.history.push("/MiCuenta")
+       
+				
 				// console.log(response.jwt);
 				
 
-				return
-			}
-			throw new Error("Error en el usuario o contraseña");
-		}catch(error){
-			alert(error.message)
+				
+		// 	}
+		// 	throw new Error("Error en el usuario o contraseña");
+		// }catch(error){
+		// 	alert(error.message)
 
-		}
+		// }
 	      
 	}
 	render(){
 		
 		return(
+			<div className="col-md-4 col-md-offset-4" align="center">
+				<form style={{textAlign: 'center'}} id='formularioSesion' onSubmit={this.handleOnSubmitLogin}>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="glyphicon glyphicon-user"/></span>
+                        <input ref="email" type="text" className="form-control" name="email" placeholder="Correo Institucional"/>
 
-			<form style={{textAlign: 'center'}} id='formularioSesion' onSubmit={this.handleOnSubmitLogin}>
-					<input className="inputInicio" ref="email" type="text" name="correoInstitucional" placeholder="Correo institucional" /><br/>				
-					<input className="inputInicio" ref="password" type="password" name="contraseña" placeholder="Ingrese su contraseña" /><br/>
-			<input id="submitIniciarSesion" type="submit" value="Iniciar sesion"/><br/>
+                    </div>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="glyphicon glyphicon-lock"/></span>
+                        <input ref="password" type="password" className="form-control" name="password" placeholder="Contraseña"/>
 
-					 
-					 
-				<Link to="/recordarContraseña"> ¿Haz olvidado tu Contraseña? </Link>
-				<Link ref="micuenta" to="/MiCuenta"></Link>
-			</form>
+                    </div>
+					{/*<input ref="email" type="text" name="correoInstitucional" placeholder="Correo institucional" /><br/>
+						<input className="inputInicio" ref="password" type="password" name="contraseña" placeholder="Ingrese su contraseña" /><br/>*/}
+
+
+
+                    <div className="input-group">
+						<span className="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Iniciar Como Admin">
+							<input type="checkbox" ref="checkBoxAdmin"aria-label="Checkbox for following text input" />
+						</span>
+                        <input className="btn btn-success width" type="submit" value="Iniciar sesion"/><br/>
+
+                    </div>
+
+
+
+					<Link to="/recordarContraseña"> ¿Haz olvidado tu Contraseña? </Link>
+					<Link ref="micuenta" to="/MiCuenta"></Link>
+				</form>
+            </div>
 			)
 	}
 

@@ -48,25 +48,17 @@ validateNombres(nombres) {
 }
  pattern=""
 validateEmail(email) {
-    var re = /[a-zA-Z]+@+unal.edu.co/;
+    var re = /[a-zA-Z]/;
     return re.test(email);
 }
-validar(){
-		const name = this.refs.nameR.value;
-		const lastname = this.refs.lastNameR.value;
-		const email = this.refs.emailR.value;
-		const password = this.refs.passwordR.value;
-		const confPassword = this.refs.confPassword.value;
-		const dependence_id =  this.refs.selectDependence.value;
 
-}
 async handleOnSubmitRegistro(e){
 
 		e.preventDefault();
 
 		const name = this.refs.nameR.value;
 		const lastname = this.refs.lastNameR.value;
-		const email = this.refs.emailR.value;
+		const email =`${this.refs.emailR.value.toLowerCase()}@unal.edu.co` ;
 		const password = this.refs.passwordR.value;
 		const confPassword = this.refs.confPassword.value;
 		const dependence_id =  this.refs.selectDependence.value;
@@ -114,6 +106,7 @@ async handleOnSubmitRegistro(e){
 			console.log(jsonResponse)
 			if(response.ok){
 				alert("Registro Completo ya puedes iniciar sesion")
+				this.props.onChange();
 				return;
 			}
 			throw new Error(jsonResponse.email + jsonResponse.password);
@@ -127,25 +120,46 @@ async handleOnSubmitRegistro(e){
 	render(){
 		console.log(this.state.dependences)
 		return(
-			<form style={{textAlign: 'center'}} onSubmit={this.handleOnSubmitRegistro}>
-				<input className="inputna" type="text" ref="nameR"  placeholder="Nombres" title="el nombre solo debe contener letras" />
-				<input className="inputna" type="text" ref="lastNameR" placeholder="Apellidos" title="el apellido solo debe contener letras" /><br/>
-				<input className="inputRegistro" type="text" ref="emailR" placeholder="Correo institucional"  title="debe ser un correo de la universidad nacional"/><br/>
-				<select ref="selectDependence">
-					{ this.state.dependences.map((dependence)=>
-						<option value={dependence.id} >{dependence.name}</option>)}
-							)}
-						
-				</select><br/>
-				<select ref="selectLevel" >
-								<option value="pregrado" selected>Pregrado</option>
-								<option value="postgrado">Postgrado</option>
-				</select><br/>
-				<input className="inputRegistro" type="password" ref="passwordR" placeholder="Contraseña" /><br/>
-				<input className="inputRegistro" type="password" ref="confPassword" placeholder="Confirmar Contraseña" /><br/>
+			<div className="col-md-4 col-md-offset-4">
+                <form style={{textAlign: 'center'}} onSubmit={this.handleOnSubmitRegistro}>
+                    <div className="input-group">
+                        <span className="input-group-addon"><i className="glyphicon glyphicon-user"/></span>
+                        <input className="form-control" type="text" ref="nameR"  placeholder="Nombres" title="el nombre solo debe contener letras" />
+                        <input className="form-control" type="text" ref="lastNameR" placeholder="Apellidos" title="el apellido solo debe contener letras" />
+                    </div>
 
-				<input className="inputRegistro" type="submit" value="Registrarse"/>
-			</form>
+                    <div className="input-group">
+                        <input className="form-control" type="text" ref="emailR" placeholder="Correo institucional"  title="debe ser un correo de la universidad nacional"/>
+                        <span className="input-group-addon" >@unal.edu.co </span>
+                    </div>
+
+
+
+
+                    <select  className="form-control" ref="selectDependence">
+                        { this.state.dependences.map((dependence)=>
+                            <option value={dependence.id} >{dependence.name}</option>)}
+                        )}
+
+                    </select>
+                    <select  className="form-control" ref="selectLevel" >
+                        <option value="pregrado" selected>Pregrado</option>
+                        <option value="postgrado">Postgrado</option>
+                    </select>
+                    <div className="input-group">
+                        <span className="input-group-addon" ><i className="glyphicon glyphicon-lock"/> </span>
+                        <input className="form-control" type="password" ref="passwordR" placeholder="Contraseña" />
+                    </div>
+                    <div className="input-group">
+                        <span className="input-group-addon" ><i className="glyphicon glyphicon-lock"/> </span>
+                        <input className="form-control" type="password" ref="confPassword" placeholder="Confirmar Contraseña" />
+
+					</div>
+
+
+                    <input className="btn btn-success width" type="submit" value="Registrarse"/>
+                </form>
+			</div>
 
 			)
 	}

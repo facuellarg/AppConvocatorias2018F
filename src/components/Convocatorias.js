@@ -1,7 +1,5 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
-import {ConvocatoriaDetalles} from './ConvocatoriaDetalles.js'
-import convocatoriaStore from './convocatoriaStore.js'
 import {Url} from './Url.js'
 import {Forbbiden} from './Forbbiden'
 
@@ -15,7 +13,7 @@ import './css/convocatoria.css'
 export class Convocatorias extends Component{
 	constructor(){
 		super()
-		this.state={currentPage :1, pages :0, itemsPeerPage:10, convocations:[], verdetalle:0}
+		this.state={currentPage :1, pages :0, itemsPeerPage:10, convocations:[], verdetalle:0, dependences:[], base:{}, data:{}}
 	}
 
 	
@@ -27,7 +25,7 @@ export class Convocatorias extends Component{
 		}
 		const data1 = JSON.stringify(
 			{
-				page:1
+				page:1,
 			}
 			)
 		
@@ -40,17 +38,33 @@ export class Convocatorias extends Component{
 	       },
 	       body: data1,
 		}
-		
+		const options1 ={
+				method: 'GET',
+		    headers: {
+		        'Accept': 'application/json',
+	          'Content-Type': 'application/json',
+		       }
+			}
+			
 
 
 		try{
-			let response = await fetch(Url+'/search_convocations', options);
-			
-			if(response.ok){
-				let jsonResponse = await response.json();
 
-				this.setState({pages:jsonResponse.pages,convocations:jsonResponse.convocations})
-				console.log(jsonResponse);
+			let response = await fetch(Url+'/search_convocations', options);
+			let response1 =  await fetch(Url+'/dependences', options1);
+		
+			
+			if(response.ok && response1.ok){
+				let jsonResponse = await response.json();
+				let jsonResponse1 = response1.json();
+				let a;
+				await jsonResponse1.then(function(value) {
+					   a = value;
+
+				});
+
+				this.setState({pages:jsonResponse.pages,convocations:jsonResponse.convocations, dependences:a})
+				
 				return
 			}
 			throw new Error("No se pudo obtener las convocatorias");
@@ -58,6 +72,7 @@ export class Convocatorias extends Component{
 			alert(error.message)
 
 		}
+
 	}
 	async handleOnClickVerDetalles(e){
 
@@ -89,7 +104,7 @@ export class Convocatorias extends Component{
 			
 			if(response.ok){
 				let jsonResponse = await response.json();
-				console.log(jsonResponse)
+
 
 				this.setState({convocations:jsonResponse.convocations, currentPage: pageNumber})
 				return
@@ -169,7 +184,7 @@ export class Convocatorias extends Component{
   	
   	
   // }
-  handleOnClickFiltrar(){
+  async handleOnClickFiltrar(){
   	if (this.refs.levelFilter.checked){
   		this.state.data.level= this.refs.selectLevel.options[this.refs.selectLevel.selectedIndex].text
   	}else{this.state.data.level = this.state.base.level}
@@ -195,6 +210,40 @@ export class Convocatorias extends Component{
 	  		this.state.data.maxPayout= this.refs.maxPayout.value;
 	  	}else{this.state.data.minPayout= this.state.base.minPayout;
 	  				this.state.data.maxPayout= this.state.base.maxPayout;}
+
+
+	  	this.state.data.page=1;
+	  	const data =JSON.stringify(this.state.data);
+
+	  	const options={
+			method: 'POST',
+			headers: {
+					"Authorization": localStorage.getItem('token'),
+	        'Accept': 'application/json',
+          'Content-Type': 'application/json',
+	       },
+	       body: data,
+			}
+
+	  	try{
+	  		let response = await fetch(Url+'/search_convocations', options);
+	  		let jsonResponse = response.json();
+	 
+	  		if(response.ok){
+	  			 let a;
+						await jsonResponse.then(function(value) {
+							   a = value;
+
+						});
+	  			this.setState({pages:a.pages,convocations:a.convocations})
+	  		
+	  			return
+	  		}
+	  	throw new Error("NO se pudo filtrar las convocatorias");
+	  	}catch(error){
+
+	  		console.log(error.message)
+	  	}
   	
   }
 
@@ -234,19 +283,20 @@ export class Convocatorias extends Component{
 				  <FormGroup >
 				  	<input type="checkBox"  className="checkbox" ref="levelFilter" onChange={this.handleOnChangeLevel.bind(this)}inline></input>
 				    <select  className="form-control" ref="selectLevel" disabled>
-							<option>Pregrado</option>
-						<option>Postgrado</option>
+							<option>pregrado</option>
+						<option>postgrado</option>
 
 					</select>
 				  </FormGroup>
 				  <br/>
 				  <FormGroup >
 				  	<input type="checkBox" className="checkbox" ref="dependenceFilter" onChange={this.handleOnChangeDependence.bind(this)}inline></input>
-				    <select  className="form-control" ref="selectDependence" disabled>
-
-						<option>Pregrado</option>
-						<option>Postgrado</option>
-					</select>
+				    <select className="form-control" ref="selectDependence" disabled>
+					{ this.state.dependences.map((dependence)=>
+						<option value={dependence.id} >{dependence.name}</option>)}
+							)}
+						
+				</select><br/>
 				  </FormGroup>
 				  <br/>
 				  
