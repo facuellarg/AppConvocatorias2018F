@@ -27,14 +27,14 @@ export class ConvocatoriaDetalles extends Component{
 	render(){
 			if(localStorage.getItem('token')){
 				return(
-                    <div className="panel panel-primary col-md-6 col-md-offset-3" align="center">
-                        <div className="panel-heading"><h3 className="panel-title">Detalles De La Conovocatoria</h3>
+                    <div className="panel panel-primary col-md-6 col-md-offset-3 " align="center">
+                        <div className="panel-heading "><h3 className="panel-title">Detalles De La Conovocatoria</h3>
                         </div>
                         <div className="panel-body ">
                             <div  className="este" align="center">
                                 <ul className="list-group">
                                     <li className="list-group-item">
-                                        <label>Nombre de la conovocatoria: </label>
+                                        <label >Nombre de la conovocatoria: </label>
                                         <p>{`${this.state.convocation.name}`}</p>
                                     </li>
                                     <li className="list-group-item">

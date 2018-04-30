@@ -7,11 +7,11 @@ import {Background} from './Background.js';
 import {FiltroConvocatoria} from './FiltroConvocatoria.js';
 import {Formulario} from './Formulario.js'
 import {RecordarContraseña} from './RecordarContraseña.js'
-
 import {Convocatorias} from './Convocatorias.js'
 import {ConvocatoriaDetalles} from './ConvocatoriaDetalles.js'
 import {Forbbiden} from './Forbbiden.js'
 import {MiCuentaContainer} from './MiCuentaContainer.js'
+import {MiCuentaAdmin} from "./MiCuentaAdmin";
 
 // import {LoginForm} from './LoginForm.js'
 // import {RegistForm} from './RegistForm.js'
@@ -28,7 +28,9 @@ const AppRoutes = () =>
       <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
       <Route exact path="/Convocatorias" component={Convocatorias}/>
       <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>
-      
+        <Route exact path="/MiCuentaAdmin" component={MiCuentaAdmin}/>
+
+
 
       
     </Switch>
