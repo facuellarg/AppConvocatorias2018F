@@ -4,6 +4,7 @@ import {RegistForm} from './RegistForm.js'
 import {obtenerDatos} from './obtenerDatos.js'
 import PropTypes from "prop-types";
 import firebase from 'firebase';
+import {Url} from './Url'
 
 
 
@@ -28,7 +29,7 @@ export class Formulario extends Component{
 
 			if (localStorage.getItem('token')) {
 			  obtenerDatos(localStorage.getItem('token')).then((users) => {
-				this.context.router.history.push("/MiCuenta")
+				this.context.router.history.push("/CuentaUser")
      
 	      })
 
@@ -52,15 +53,41 @@ export class Formulario extends Component{
 			login:0
 		})
 	}
-    handleOnClickWithGoogle(){
-		console.log("Hola")
+    async handleOnClickWithGoogle(){
+
         const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider)
 			.then(result => {
+                console.log(result)
                 var re = /[a-zA-Z]+@+unal.edu.co/;
+                if(re.test(result.user.email)){
+                   const data ={email: result.additionalUserInfo.profile.email,
+				   				given_name : result.additionalUserInfo.profile.given_name,
+				   				family_name: result.additionalUserInfo.profile.family_name,
+				   				dependence_id:1}
+				   	console.log(data)
+                    const options={
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    }
 
-				if(re.test(result.user.email)){
-                    this.setState({s_users: result.user})
+
+					fetch(`${Url}/users/social`,options).then( response =>{
+						if(response.ok){
+							return response.json()
+						}
+						throw new Error("No se pudo iniciar sesion");
+					},error => console.log(Error.message)).
+						then(jsonResponse =>{
+							localStorage.setItem('token',jsonResponse.jwt)
+
+
+						})
+
 
                     return;
 				}else{

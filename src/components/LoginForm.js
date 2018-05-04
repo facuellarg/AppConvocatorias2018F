@@ -21,35 +21,45 @@ export class LoginForm extends Component{
 }
 
 	async handleOnSubmitLogin(e){
-		
 
-		
 		e.preventDefault();
 
-		const email = this.refs.email.value.toLowerCase();
-		const password = this.refs.password.value;
-		const data = JSON.stringify(
-			{
-				"auth":{"email":email,"password":password}
-			}
-		)	
+        const email = this.refs.email.value.toLowerCase();
+        const password = this.refs.password.value;
+        var data = {};
+        var link = "";
+
+        if(this.refs.checkBoxAdmin.checked){
+             data = JSON.stringify({
+                    "auth":{ email}
+                })
+             link = "/admin_token";
+
+
+        }else{
+            data = JSON.stringify({
+                    "auth":{"email":email,"password":password}
+                })
+            link = "/user_token";
+
+        }
 		const options={
 			method: 'POST',
 			headers: {
 	        'Accept': 'application/json',
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
 	       },
 	       body: data,
 		}
-		
 
 		if(!this.validateEmail(email)){
 			alert("el correo debe ser un correo de la universidad nacional (example@unal.edu.co)")
 			return;
 		}
-		
-		fetch(Url+'/user_token',
-			options).then(response=>{
+
+
+
+		/*fetch(Url+link, options).then(response=>{
 				if(response.ok){
 						return response.json()
 					}
@@ -60,18 +70,31 @@ export class LoginForm extends Component{
 						let n = obtenerDatos(jsonResponse.jwt)
 						console.log(n.name)
 						localStorage.setItem('token', jsonResponse.jwt);
-						this.context.router.history.push("/MiCuenta")
+						this.context.router.history.push("/CuentaUser")
                         window.location.reload()
-								})
+								})*/
+        try{
+            let response = await fetch(`${Url}${link}`, options);
+
+            if(response.ok){
+                let jsonResponse = await response.json();
+                let n = await obtenerDatos(jsonResponse.jwt)
+                localStorage.setItem('token', jsonResponse.jwt);
 
 
-						
-			// if(response.ok){
-			// 	let jsonResponse = await response.json();
-			// 	// let n = await obtenerDatos(jsonResponse.jwt)
-			// 	localStorage.setItem('token', jsonResponse.jwt);
-			// 	this.context.router.history.push("/MiCuenta")
-			// 	return
+
+                return;
+            }
+        throw new Error("No se pudo cargar los datos, error de usuario o contraseña")
+        } catch (e) {
+            alert(e.message)
+        }
+        
+        if(localStorage.getItem('token')){
+            this.context.router.history.push("/CuentaUser")
+            window.location.reload();
+        }
+
 
 				
 			
@@ -138,7 +161,7 @@ export class LoginForm extends Component{
 
 
 					<Link to="/recordarContraseña"> ¿Haz olvidado tu Contraseña? </Link>
-					<Link ref="micuenta" to="/MiCuenta"></Link>
+
 				</form>
             </div>
 			)

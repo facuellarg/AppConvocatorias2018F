@@ -10,9 +10,9 @@ import {RecordarContraseña} from './RecordarContraseña.js'
 import {Convocatorias} from './Convocatorias.js'
 import {ConvocatoriaDetalles} from './ConvocatoriaDetalles.js'
 import {Forbbiden} from './Forbbiden.js'
-import {MiCuentaContainer} from './MiCuentaContainer.js'
-import {MiCuentaAdmin} from "./MiCuentaAdmin";
-
+import {CuentaUserContainer} from './CuentaUserContainer.js'
+import {CuentaAdminContainer} from "./CuentaAdminContainer";
+import {VerEstadisticasContainer} from "./VerEstadisticasContainer";
 // import {LoginForm} from './LoginForm.js'
 // import {RegistForm} from './RegistForm.js'
 
@@ -21,14 +21,15 @@ import {MiCuentaAdmin} from "./MiCuentaAdmin";
 const AppRoutes = () =>
   <Background>
     <Switch>
-      <Route exact path="/MiCuenta" component={MiCuentaContainer}/>
+      <Route exact path="/CuentaUser" component={CuentaUserContainer}/>
         <Route exact path="/Forbbiden" component={Forbbiden} />
       <Route exact path="/" component={Formulario} /> 
       <Route exact path="/fconvocatoria" component={FiltroConvocatoria}/>
       <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
       <Route exact path="/Convocatorias" component={Convocatorias}/>
       <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>
-        <Route exact path="/MiCuentaAdmin" component={MiCuentaAdmin}/>
+        <Route exact path="/verEstadisticas" component={VerEstadisticasContainer}/>
+        <Route exact path="/CuentaAdmin" component={CuentaAdminContainer}/>
 
 
 

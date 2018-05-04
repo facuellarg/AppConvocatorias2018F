@@ -1,7 +1,7 @@
 export default [
   {
     title: 'Inicio',
-    url: '/MiCuenta'
+    url: '/CuentaUser'
   },
   {
     title: 'Convocatorias',
