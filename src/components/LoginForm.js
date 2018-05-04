@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 export class LoginForm extends Component{
 	  static contextTypes = {
-    router: PropTypes.object
+     router: PropTypes.object
 	  }
 	  constructor(props, context) {
 		 super(props, context);
@@ -59,7 +59,7 @@ export class LoginForm extends Component{
 
 
 
-		/*fetch(Url+link, options).then(response=>{
+		fetch(Url+link, options).then(response=>{
 				if(response.ok){
 						return response.json()
 					}
@@ -72,27 +72,27 @@ export class LoginForm extends Component{
 						localStorage.setItem('token', jsonResponse.jwt);
 						this.context.router.history.push("/CuentaUser")
                         window.location.reload()
-								})*/
-        try{
+								})
+       /* try{
             let response = await fetch(`${Url}${link}`, options);
 
             if(response.ok){
                 let jsonResponse = await response.json();
                 let n = await obtenerDatos(jsonResponse.jwt)
                 localStorage.setItem('token', jsonResponse.jwt);
-
-
-
+                this.context.router.history.push("/CuentaUser");
+                window.location.reload();
                 return;
+            		
+
             }
         throw new Error("No se pudo cargar los datos, error de usuario o contraseña")
         } catch (e) {
             alert(e.message)
-        }
-        
+        }*/
+
         if(localStorage.getItem('token')){
-            this.context.router.history.push("/CuentaUser")
-            window.location.reload();
+            
         }
 
 

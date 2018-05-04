@@ -38,35 +38,22 @@ constructor(){
                 return response.json();
             }
             throw new Error('No se pudieron cargar las dependencias')
-        },error => alert(error.message)).then(jsonResponse =>{
+        },error => console.log(error.message)).then(jsonResponse =>{
             this.setState({dependences:jsonResponse})
-        })
-	/*try{
-		let response =  await fetch(Url+'/dependences', options).then(response =>
-        {
-            if(response.ok){
-                return response.json();
-            }
-            throw new Error('No se pudieron cargar las dependencias')
-        },error => alert(error.message)).then(jsonResponse =>{
-            this.setState({dependences:jsonResponse})
-        })
-		let jsonResponse = response.json();
-		if(response.ok){
-			let a;
-			await jsonResponse.then(function(value) {
-				   a = value;
+        });
 
-				});
+        // try{
+        // 	let response = await fetch(Url+'/dependences', options)
+        // 	if(response.ok){
+        // 		let jsonResponse = await response.json()
+        // 		this.setState({dependences:jsonResponse})
+        // 		return;
+        // 	}throw new Error ('No se pudieron cargar las depenencias')
 
-			await this.setState({dependences:a})
-			return;
-	}
+        // }catch(e){
+        // 		console.log(e.message)
+        // }
 	
-	/throw new Error('No se pudieron cargar las dependencias')
-	}catch(error){
-		console.log(error.message)
-	}	*/
 
 
 }

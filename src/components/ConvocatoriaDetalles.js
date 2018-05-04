@@ -66,7 +66,7 @@ export class ConvocatoriaDetalles extends Component{
 										<p>${`${this.state.convocation.payout}`}</p>
                                     </li>
                                     <li className="list-group-item">
-                                        <label>Duración de la vinculación: </label>
+                                        <label>Duración de la vinculación(dias): </label>
 										<p>{`${this.state.convocation.vacants}`}</p>
                                     </li>
                                     <li className="list-group-item">

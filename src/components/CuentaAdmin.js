@@ -1,11 +1,24 @@
 import React,{Component} from 'react';
 import store from './store';
+import PropTypes from "prop-types";
 
 export class CuentaAdmin extends Component{
-    constructor(props){
-        super(props)
+    static contextTypes = {
+        router: PropTypes.object
+    }
+    constructor(props, context) {
+        super(props, context);
+        this.handleOnClickEstadisticas = this.handleOnClickEstadisticas.bind(this)
+        this.handleOnClickCrearConvocatoria = this.handleOnClickCrearConvocatoria.bind(this)
     }
 
+    handleOnClickEstadisticas(){
+        this.context.router.history.push("/verestadisticas");
+
+    }
+    handleOnClickCrearConvocatoria(){
+        this.context.router.history.push("/crearconvocatoria");
+    }
     render(){
         console.log(store.getState())
         return(
@@ -14,8 +27,8 @@ export class CuentaAdmin extends Component{
                    <input className="form-control" id="inputName" ref="name" type="text" readOnly="readOnly" defaultValue={`${store.getState().name}`} ></input>
                    <input className="form-control" id="inputName" ref="lastname" type="text" readOnly="readOnly" defaultValue={`${store.getState().lastname}`}></input>
                    <div className="btn-group">
-                       <button className="btn btn-default">Crear convocatoria</button>
-                       <button className="btn btn-default">Ver Estadisticas</button>
+                       <button className="btn btn-default" onClick={this.handleOnClickCrearConvocatoria}>Crear convocatoria</button>
+                       <button className="btn btn-default" onClick={this.handleOnClickEstadisticas}>Ver Estadisticas</button>
                    </div>
                </div>
             </div>

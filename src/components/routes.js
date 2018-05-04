@@ -13,6 +13,7 @@ import {Forbbiden} from './Forbbiden.js'
 import {CuentaUserContainer} from './CuentaUserContainer.js'
 import {CuentaAdminContainer} from "./CuentaAdminContainer";
 import {VerEstadisticasContainer} from "./VerEstadisticasContainer";
+import {CrearConvocatoria} from "./CrearConvocatoria";
 // import {LoginForm} from './LoginForm.js'
 // import {RegistForm} from './RegistForm.js'
 
@@ -21,6 +22,7 @@ import {VerEstadisticasContainer} from "./VerEstadisticasContainer";
 const AppRoutes = () =>
   <Background>
     <Switch>
+
       <Route exact path="/CuentaUser" component={CuentaUserContainer}/>
         <Route exact path="/Forbbiden" component={Forbbiden} />
       <Route exact path="/" component={Formulario} /> 
@@ -28,8 +30,9 @@ const AppRoutes = () =>
       <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
       <Route exact path="/Convocatorias" component={Convocatorias}/>
       <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>
-        <Route exact path="/verEstadisticas" component={VerEstadisticasContainer}/>
+        <Route exact path="/verestadisticas" component={VerEstadisticasContainer}/>
         <Route exact path="/CuentaAdmin" component={CuentaAdminContainer}/>
+        <Route exact path="/CrearConvocatoria" component={CrearConvocatoria}/>
 
 
 

@@ -12,11 +12,13 @@
     "react-chartjs-2": "^2.7.2",
     "react-dom": "^16.3.2",
     "react-firebase": "^2.2.8",
+    "react-google-maps": "^9.4.5",
     "react-js-pagination": "^3.0.1",
     "react-loading": "^2.0.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
+    "react-streetview": "^1.1.1",
     "redux": "^3.7.2"
   },
   "scripts": {

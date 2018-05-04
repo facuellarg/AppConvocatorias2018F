@@ -31,6 +31,7 @@ import sealColombia from './images/sealColombia.png';
 import escudoUnal from './images/escudoUnal.png';
 import escudoUnalSvg from './images/escudoUnal.svg';
 import escudoUnal_black from './images/escudoUnal_black.png';
+import {Maps} from "./Maps";
 
 
 
@@ -85,7 +86,8 @@ export class Background extends Component{
      
         <body>
         	<Header items={items} />
-          <main> <Content body={children} /></main>
+          <main> <Content body={children} /> </main>
+            <Maps/>
 	        <Footer />	
         </body>
       

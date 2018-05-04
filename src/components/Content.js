@@ -12,8 +12,9 @@ export class Content extends Component {
   render() {
     const { body } = this.props;
     return (
-      <div>{body}</div>
+      <div>
+          {body}<br/>
+      </div>
     );
   }
 }
-
