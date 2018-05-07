@@ -33,8 +33,8 @@ export class Convocatorias extends Component{
 			method: 'POST',
 			headers: {
 					"Authorization": localStorage.getItem('token'),
-	        'Accept': 'application/json',
-          'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				  	'Content-Type': 'application/json',
 	       },
 	       body: data1,
 		}

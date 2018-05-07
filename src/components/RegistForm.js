@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Url} from './Url.js'
+import swal from 'sweetalert2'
 // import dependences from './js/dependences.js'
 
 
@@ -16,11 +17,11 @@ async componentWillMount(){
 	// peticion para tener todas las dependencias
 			const options ={
 				method: 'GET',
-		    headers: {
-		        'Accept': 'application/json',
-	          'Content-Type': 'application/json',
-		       }
-			}
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				   }
+				}
 	try{
 		let response =  await fetch(Url+'/dependences', options);
 		let jsonResponse = response.json();
@@ -43,12 +44,12 @@ async componentWillMount(){
 
 }
 validateNombres(nombres) {
-    var re = /[A-Za-z]+/;
+    var re = /^[a-zA-Z]+$/;
     return re.test(nombres) ;
 }
  pattern=""
 validateEmail(email) {
-    var re = /[a-zA-Z]/;
+    var re = /^[a-zA-Z]+$/
     return re.test(email);
 }
 
@@ -58,29 +59,53 @@ async handleOnSubmitRegistro(e){
 
 		const name = this.refs.nameR.value;
 		const lastname = this.refs.lastNameR.value;
-		const email =`${this.refs.emailR.value.toLowerCase()}@unal.edu.co` ;
+		let email = this.refs.emailR.value.toLowerCase() ;
 		const password = this.refs.passwordR.value;
-		const confPassword = this.refs.confPassword.value;
+		const password_confirmation = this.refs.confPassword.value;
 		const dependence_id =  this.refs.selectDependence.value;
 		const level = this.refs.selectLevel.value;
+		console.log(this.validateNombres(lastname))
 		if(!(this.validateNombres(name) && this.validateNombres(lastname))){
-			alert("los nombres y apellidos deben estar separados por un espacio y solo con letras(example example)")
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: "los nombres y apellidos deben estar separados por un espacio y solo con letras(example example)",
+
+            })
 			return;
 		}
 		if(!this.validateEmail(email)){
-			alert("el correo debe ser un correo de la universidad nacional (example@unal.edu.co)")
+
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: "debe ser un correo institucional (example@unal.edu.co)",
+
+            })
 			return;
 		}
-		console.log(dependence_id);
+		console.log(name);
 		if(password.length === 0 || password.length < 8){
-			alert("La contraseña no puede ser vacia y minimo 8 caracteres")
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: "La contraseña no puede ser vacia y minimo 8 caracteres",
+
+            })
+
 			return
 		}
-		if(password !== confPassword){
-			alert("las contraseñas no coinciden");
+		if(password !== password_confirmation){
+
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: "las contraseñas no coinciden",
+
+            })
 			return;
 		}
-
+		email = `${this.refs.emailR.value.toLowerCase()}@unal.edu.co`
 		const options={
       method: 'POST',
 	    headers: {
@@ -88,14 +113,13 @@ async handleOnSubmitRegistro(e){
            'Content-Type': 'application/json',
 	       },
 	    body: JSON.stringify({
-	    		 "name": name,
-	    		 "lastname": lastname,
-	         "email": email,
-	         "password": password,
-	         "password_confirmation": password,
-	         "level": level,
-	         "dependence_id": dependence_id,
-	
+			name,
+			lastname,
+			email,
+			password,
+            password_confirmation,
+			level,
+			dependence_id,
 	      	}) 
       
 		}
@@ -118,7 +142,7 @@ async handleOnSubmitRegistro(e){
 	}
 
 	render(){
-		console.log(this.state.dependences)
+
 		return(
 			<div className="col-md-4 col-md-offset-4">
                 <form style={{textAlign: 'center'}} onSubmit={this.handleOnSubmitRegistro}>

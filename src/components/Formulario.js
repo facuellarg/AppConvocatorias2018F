@@ -5,7 +5,15 @@ import {obtenerDatos} from './obtenerDatos.js'
 import PropTypes from "prop-types";
 import firebase from 'firebase';
 import {Url} from './Url'
+import swal from 'sweetalert2'
 
+
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error("no se logro iniciar sesion, intentelo mas tarde "+response.statusText);
+    }
+    return response.json();
+}
 
 
 export class Formulario extends Component{
@@ -57,55 +65,69 @@ export class Formulario extends Component{
 
         const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider)
-			.then(result => {
-                console.log(result)
-                var re = /[a-zA-Z]+@+unal.edu.co/;
-                if(re.test(result.user.email)){
-                   const data ={email: result.additionalUserInfo.profile.email,
-				   				given_name : result.additionalUserInfo.profile.given_name,
-				   				family_name: result.additionalUserInfo.profile.family_name,
-				   				dependence_id:1}
-				   	console.log(data)
-                    const options={
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    }
+					.then(result => {
+            console.log(result)
+            var re = /[a-zA-Z]+@+unal.edu.co/;
+            if(re.test(result.user.email)){
+              const data ={email: result.additionalUserInfo.profile.email,
+		   				given_name : result.additionalUserInfo.profile.given_name,
+		   				family_name: result.additionalUserInfo.profile.family_name,
+		   				dependence_id:1}
+					   	console.log(data)
+              const options={
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              	},
+              	body: JSON.stringify(data),
+              }
+							fetch(`${Url}/users/social`,options)
+							.then(handleErrors)
+							.then(jsonResponse=>{
+								localStorage.setItem('token',jsonResponse.jwt)
+								window.location.reload();
+							})
+							.catch(error=>{
+								swal({
+								  type: 'error',
+								  title: 'Oops...',
+								  text: error.message,
+								
+							})
+							})
 
+							// fetch(`${Url}/users/social`,options).then( response =>{
+							// 	if(response.ok){
+							// 		return response.json()
+							// 	}
+							// 	throw new Error("No se pudo iniciar sesion");
+							// },error => console.log(Error.message)).
+							// 	then(jsonResponse =>{
+							// 		localStorage.setItem('token',jsonResponse.jwt)
+							// 		window.location.reload();
 
-					fetch(`${Url}/users/social`,options).then( response =>{
-						if(response.ok){
-							return response.json()
+							// 	})
+
+              return;
+						}else{
+							swal({
+								  type: 'error',
+								  title: 'Debe ser un correo de la Universidad Nacional',
+								  text: 'example@unal.edu.co',
+								
+							})
+              firebase.auth().signOut()
+              .then(()=>{
+      	        this.setState({s_users :null})
+                return;
+               })
+               .catch(error => console.log(error.message))
 						}
-						throw new Error("No se pudo iniciar sesion");
-					},error => console.log(Error.message)).
-						then(jsonResponse =>{
-							localStorage.setItem('token',jsonResponse.jwt)
 
 
-						})
-
-
-                    return;
-				}else{
-					alert("Correo no institucional")
-                    firebase.auth().signOut()
-                        .then(()=>{
-                            this.setState({s_users :null})
-
-                            return;
-                        })
-                        .catch(error => console.log(error.message))
-				}
-
-
-			})
-			.catch(error => alert(error.message + "  " + error.code))
-
-	}
+						}).catch(error => alert(error.message + "  " + error.code))
+			}
 	hanledSignOut(){
 
 

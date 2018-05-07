@@ -1,3 +1,3 @@
-export const Url = 'http://convocatorias-juligarji.c9users.io'
+export const Url = 'http://localhost:3000'
 
 /*http://convocatorias-juligarji.c9users.io/'*/
