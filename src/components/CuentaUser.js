@@ -152,8 +152,8 @@ export class CuentaUser extends Component{
                                         </div>
                                         <label>Dependencia:</label>
                                         <select ref="selectDependence" className="form-control" disabled>
-                                            { this.props.dependences.map((dependence)=>
-                                                <option value={dependence.id} >{dependence.name}</option>)}
+                                            { this.props.dependences.map((dependence, key)=>
+                                                <option key={key} value={dependence.id} >{dependence.name}</option>)}
                                             )}
 
                                         </select><br/>

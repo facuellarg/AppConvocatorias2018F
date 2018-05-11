@@ -1,13 +1,14 @@
 import React,{Component} from 'react'
-import { render } from 'react-dom';
 import './css/CrearConvocatoria.css'
-import {Url} from "./Url";
+import ReactDOM from 'react-dom'
 
+import {Url} from "./Url";
+import swal from 'sweetalert2'
 
 export class CrearConvocatoria extends Component{
     constructor(props){
         super(props)
-        this.state ={dependences:[]}
+        this.state ={dependences:[], inputRequest:[], inputActivities:[], inputFiles:[]}
         this.handleOnClickRequest =  this.handleOnClickRequest.bind(this)
         this.handleOnClickDependence = this.handleOnClickDependence.bind(this)
         this.handleOnClickActivities = this.handleOnClickActivities.bind(this)
@@ -20,7 +21,9 @@ export class CrearConvocatoria extends Component{
         /*if(!localStorage.getItem('token')){
             return;
         }*/
-
+        this.state.inputRequest.push(<input className="form-control" input="text" placeholder="Requisitos"/>)
+        this.state.inputActivities.push( <input className="form-control" input="text" placeholder="Actividad"/>)
+        this.state.inputFiles.push(<input className="form-control" input="text" placeholder="Nombre del Archivo 1"/>)
         const options ={
             method: 'GET',
             headers: {
@@ -43,80 +46,92 @@ export class CrearConvocatoria extends Component{
         }
 
     }
-    async handleOnClickVerDetalles(e){
 
-        const convocation = this.state.convocations[e.target.id]
-        localStorage.setItem('convocation', JSON.stringify(convocation))
-
+    
+    validateData(data){
+        let re =/^[0-9]{1,2}[/][0-9]{1,2}[/][0-9]{4}$/;
+        return re.test(data)
     }
-    async handlePageChange(pageNumber) {
-        const data = JSON.stringify(
-            {
-                page:pageNumber
-            }
-        )
-
-        const options={
-            method: 'POST',
-            headers: {
-                "Authorization": localStorage.getItem('token'),
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: data,
-        }
-
-
-
-        try{
-            let response = await fetch(Url+'/search_convocations', options);
-
-            if(response.ok){
-                let jsonResponse = await response.json();
-
-
-                this.setState({convocations:jsonResponse.convocations, currentPage: pageNumber})
-                return
-            }
-            throw new Error("No se pudo obtener las convocatorias");
-        }catch(error){
-            alert(error.message)
-
-        }
-
-    }
-
     handleOnClickRequest(e){
         e.preventDefault();
+        if(this.state.inputRequest.length == 3){
+            return;
+        }
+        const a = <input className="form-control" input="text" placeholder="Requisitos"/>
+        let temp = this.state.inputRequest;
+        temp.push(a);
+        this.setState({inputRequest:temp})
 
-        this.refs.request.innerHTML += '<input class="form-control" input="text" placeholder="Requisitos"/>'
 
     }
     handleOnClickActivities(e){
         e.preventDefault();
-
-        this.refs.activities.innerHTML += '<input class="form-control" input="text" placeholder="Actividad"/>'
+        if(this.state.inputActivities.length == 3){
+            return;
+        }
+        const a = <input className="form-control" input="text" placeholder="Actividad"/>
+        let temp = this.state.inputActivities;
+        temp.push(a);
+        this.setState({inputActivities:temp})
     }
     handleOnClickFiles(e){
         e.preventDefault();
-
-        this.refs.files.innerHTML += ' <input class="form-control" input="text" placeholder="Nombre del Archivo"/>'
+        let n = this.state.inputFiles.length
+        if(n== 10){
+            return;
+        }
+        n = n+1
+        const placeholder ="Nombre del Archivo " + n
+        const a = <input className="form-control" input="text" placeholder={placeholder}/>
+        let temp = this.state.inputFiles;
+        temp.push(a);
+        this.setState({inputFiles:temp})
     }
     handleOnClickDependence(e){
         e.preventDefault();
-
+        /*
         let a  = <select className="form-control">
                     {this.state.dependences.map((dependence, key)=>
                         <option value={dependence.id} key={key}>{dependence.name}</option>
                     )}
                 </select>
-        render( a,  this.refs.dependences)
+        render( a,  this.refs.dependences)*/
 
     }
-    handleOnClickCrear(){
+    handleOnClickCrear(e){
+        e.preventDefault()
         const name = this.refs.name.value;
+        const description = this.refs.description.value;
         const level = this.refs.level.value;
+        const end_date = this.refs.endDate.value;
         const vacants = this.refs.name.value;
+        const hoursPeerWeek = this.refs.hours.value;
+        const payout = this.refs.payout.value;
+        const vincultaions_days = this.refs.days.value;
+        let dependences =[]
+
+        var x = this.refs.dependences;
+        for(let i = 0; i < x.length; i ++){
+            if(x.options[i].selected == true){
+                dependences.push(x.options[i].text)
+            }
+        }
+        if(!this.validateData(end_date)){
+            swal({
+                type: 'error',
+                title: 'Fecha Incorrecta',
+                text: 'La Fecha debe estar en formato DD/MM/AAAA',
+
+            })
+            //return;
+        }
+
+
+
+
+
+
+
 
 
     }
@@ -151,12 +166,12 @@ export class CrearConvocatoria extends Component{
                         </div>
                         <div className="input-group">
                             <span className="input-group-addon">Pago Mensual</span>
-                            <input ref="hours" min='10000' type="number" className="form-control"
+                            <input ref="payout" min='10000' type="number" className="form-control"
                             />
                         </div>
                         <div className="input-group">
                             <span className="input-group-addon">Dias de vinculacion</span>
-                            <input ref="hours" min='7' type="number" className="form-control"
+                            <input ref="days" min='7' type="number" className="form-control"
                             />
                         </div>
                         <div className="form-group ">
@@ -164,7 +179,7 @@ export class CrearConvocatoria extends Component{
                                 <span className="input-group-addon">
                                     <span className="glyphicon glyphicon-calendar"></span>
                                 </span>
-                                <input type='text' placeholder='DD/MM/AAAA' className="form-control"/>
+                                <input ref="endDate" type='text'  placeholder='DD/MM/AAAA' className="form-control"/>
 
                             </div>
                         </div>
@@ -173,14 +188,14 @@ export class CrearConvocatoria extends Component{
                     <div align="left" className="col-md-4 ">
                         <div className="form-group">
                             <span className="input-group-addon">Descipcion de la convocatoria</span>
-                            <textarea className="form-control" rows="5" id="comment"style={{resize:'none'}}></textarea>
+                            <textarea ref="description"className="form-control" rows="5" id="comment" style={{resize:'none'}}></textarea>
                         </div>
 
 
                         <div className="form-group">
                             <span className="input-group-addon ">Dependencias</span>
-                            <div className="form-group array" ref="dependences" >
-                                <select className="form-control" multiple>
+                            <div className="form-group array"  >
+                                <select ref="dependences" className="form-control" multiple>
                                     {this.state.dependences.map((dependence, key)=>
                                         <option value={dependence.id} key={key}>{dependence.name}</option>
                                     )}
@@ -201,25 +216,25 @@ export class CrearConvocatoria extends Component{
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="form-group">
-                            <span className="input-group-addon ">Requisitos</span>
-                            <div className="form-group array" ref="request" >
-                                <input className="form-control" input="text" placeholder="Requisitos"/>
+                        <div className="form-group" >
+                            <span className="input-group-addon"><button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickRequest}></button>Requisitos</span>
+                            <div className="form-group array" id="request" >
+                                {this.state.inputRequest}
                             </div>
-                            <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickRequest}></button>
+
                         </div>
 
                         <div className="form-group">
                             <span className="input-group-addon ">Actividades</span>
                             <div className="form-group array" ref="activities" >
-                                <input className="form-control" input="text" placeholder="Actividad"/>
+                                {this.state.inputActivities}
                             </div>
                             <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickActivities}></button>
                         </div>
                         <div className="form-group">
                             <span className="input-group-addon ">Archivos Requeridos</span>
                             <div className="form-group array" ref="files" >
-                                <input className="form-control" input="text" placeholder="Nombre del Archivo"/>
+                                {this.state.inputFiles}
                             </div>
                             <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickFiles}></button>
                         </div>

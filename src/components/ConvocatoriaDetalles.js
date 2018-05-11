@@ -71,42 +71,45 @@ export class ConvocatoriaDetalles extends Component{
                                     </li>
                                     <li className="list-group-item">
                                         <label>Requisitos Generales:</label>
-
+                                        <ol>
                                         {this.state.convocation.requirements.map((requeriment)=>
                                             <li>{requeriment.description}</li>
                                         )}
+                                        </ol>
 
                                     </li>
                                     <li className="list-group-item">
                                         <label>Dependencias:</label>
-
+                                        <ol>
                                         {this.state.convocation.dependences.map((dependence)=>
                                             <li>{dependence.name}</li>
                                         )}
-
+                                        </ol>
                                     </li>
                                     <li className="list-group-item">
                                         <label>Perfil:</label>
-
+                                        <ol>
                                         {this.state.convocation.profiles.map((prof)=>
                                             <li>{prof.description}</li>
                                         )}
-
+                                        </ol>
                                     </li>
                                     <li className="list-group-item">
                                         <label>Actividades a realizar:</label>
-
+                                        <ol>
                                         {this.state.convocation.activities.map((activity)=>
                                             <li>{activity.description}</li>
                                         )}
+                                        </ol>
 
                                     </li>
                                     <li className="list-group-item">
                                         <label>Archivos requeridos:</label>
-
+                                        <ol>
                                         {this.state.convocation.required_files.map((required_file)=>
                                             <li>{required_file.name}</li>
                                         )}
+                                        </ol>
 
                                     </li>
                                 </ul>

@@ -14,6 +14,7 @@ export class Convocatorias extends Component{
 	constructor(){
 		super()
 		this.state={currentPage :1, pages :0, itemsPeerPage:10, convocations:[], verdetalle:0, dependences:[], base:{}, data:{}}
+		this.handlePageChange = this.handlePageChange.bind(this)
 	}
 
 	
@@ -81,11 +82,8 @@ export class Convocatorias extends Component{
 
 	}
 	async handlePageChange(pageNumber) {
-    const data = JSON.stringify(
-			{
-				page:pageNumber
-			}
-			)
+		this.state.data.page = pageNumber
+    const data = JSON.stringify(this.state.data)
 		
 		const options={
 			method: 'POST',
@@ -212,10 +210,10 @@ export class Convocatorias extends Component{
 	  				this.state.data.maxPayout= this.state.base.maxPayout;}
 
 
-	  	this.state.data.page=1;
+	  	this.state.data.page = 1;
 	  	const data =JSON.stringify(this.state.data);
 
-	  	const options={
+	  	const options = {
 			method: 'POST',
 			headers: {
 					"Authorization": localStorage.getItem('token'),
@@ -248,16 +246,14 @@ export class Convocatorias extends Component{
   }
 
 	render(){
-		
-  
-
+		console.log(this.props.location.search.substring(6))
 		let pagination =( <div>
         <Pagination
           activePage={this.state.currentPage}
           itemsCountPerPage={this.state.itemsPeerPage}
           totalItemsCount={this.state.itemsPeerPage*this.state.pages}
           pageRangeDisplayed={5}
-          onChange={this.handlePageChange.bind(this)}
+          onChange={this.handlePageChange}
           
         />
       </div>
@@ -292,8 +288,8 @@ export class Convocatorias extends Component{
 				  <FormGroup >
 				  	<input type="checkBox" className="checkbox" ref="dependenceFilter" onChange={this.handleOnChangeDependence.bind(this)}inline></input>
 				    <select className="form-control" ref="selectDependence" disabled>
-					{ this.state.dependences.map((dependence)=>
-						<option value={dependence.id} >{dependence.name}</option>)}
+					{ this.state.dependences.map((dependence, key)=>
+						<option key={key} value={dependence.id} >{dependence.name}</option>)}
 							)}
 						
 				</select><br/>
