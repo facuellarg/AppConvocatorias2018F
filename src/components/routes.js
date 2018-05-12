@@ -14,6 +14,8 @@ import {CuentaUserContainer} from './CuentaUserContainer.js'
 import {CuentaAdminContainer} from "./CuentaAdminContainer";
 import {VerEstadisticasContainer} from "./VerEstadisticasContainer";
 import {CrearConvocatoria} from "./CrearConvocatoria";
+import {ConvocatoriaAspirantes} from "./ConvocatoriaAspirantes";
+import {Aspirantes} from "./Aspirantes";
 // import {LoginForm} from './LoginForm.js'
 // import {RegistForm} from './RegistForm.js'
 
@@ -22,21 +24,18 @@ import {CrearConvocatoria} from "./CrearConvocatoria";
 const AppRoutes = () =>
   <Background>
     <Switch>
-
-      <Route exact path="/CuentaUser" component={CuentaUserContainer}/>
+        <Route exact path="/CuentaUser" component={CuentaUserContainer}/>
         <Route exact path="/Forbbiden" component={Forbbiden} />
-      <Route exact path="/" component={Formulario} /> 
-      <Route exact path="/fconvocatoria" component={FiltroConvocatoria}/>
-      <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
-      <Route exact path="/Convocatorias" component={Convocatorias}/>
-      <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>
+        <Route exact path="/" component={Formulario} />
+        <Route exact path="/fconvocatoria" component={FiltroConvocatoria}/>
+        <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
+        <Route exact path="/Convocatorias" component={Convocatorias}/>
+        <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>
         <Route exact path="/verestadisticas" component={VerEstadisticasContainer}/>
         <Route exact path="/CuentaAdmin" component={CuentaAdminContainer}/>
         <Route exact path="/CrearConvocatoria" component={CrearConvocatoria}/>
-
-
-
-      
+      <Route exact path={"/convocatoriaaspirantes"} component={ConvocatoriaAspirantes}/>
+        <Route exact path={"/aspirantes"} component={Aspirantes}/>
     </Switch>
   </Background>;
 

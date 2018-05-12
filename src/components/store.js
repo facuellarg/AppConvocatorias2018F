@@ -10,11 +10,11 @@ const reducer = (state,action) => {
             level:action.level,
             email: action.email,
             dependence_id: action.dependence_id,
-
+            isAdmin: action.isAdmin
         
         }
     }
     return state;
 };
 
-export default createStore(reducer, {id: "sinnada",name: "sinnadas",lastname:" ",level:"pregrado",email: "",dependence_id:0,});
+export default createStore(reducer, {id: "sinnada",name: "sinnadas",lastname:" ",level:"pregrado",email: "",dependence_id:0,isAdmin:false});

@@ -61,7 +61,7 @@ export class Background extends Component{
     children: PropTypes.object.isRequired
   };
     async updateRedux(){
-       const body ={
+       let body ={
                      type: "ADD_TO_STORE",
                      id: this.state.s_users.id,
                      name: this.state.s_users.name,
@@ -69,12 +69,16 @@ export class Background extends Component{
                      level: this.state.s_users.level,
                      email: this.state.s_users.email,
                      dependence_id: this.state.s_users.dependence_id,
-
-           
+                     isAdmin:false
                  }
          if(localStorage.getItem('token')){
-            await store.dispatch(body)}
-        }
+           store.dispatch(body)
+         }else if(localStorage.getItem('Admintoken')){
+           body.isAdmin = true;
+           store.dispatch(body)
+         }
+
+}
 
 	render(){
 

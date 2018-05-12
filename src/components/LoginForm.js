@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Url} from './Url.js'
 import {obtenerDatos} from './obtenerDatos.js'
 import { Link } from 'react-router-dom';
-import PropTypes from "prop-types";
+
 import swal from 'sweetalert2'
 
 function handleErrors(response) {
@@ -13,11 +13,9 @@ function handleErrors(response) {
 }
 
 export class LoginForm extends Component{
-	  static contextTypes = {
-     router: PropTypes.object
-	  }
-	  constructor(props, context) {
-		 super(props, context);
+
+	  constructor(props) {
+		 super(props );
 		this.state={isLogged:0, data:null};
 		this.handleOnSubmitLogin = this.handleOnSubmitLogin.bind(this);
 	  }
@@ -33,23 +31,10 @@ export class LoginForm extends Component{
 
         const email = this.refs.email.value.toLowerCase();
         const password = this.refs.password.value;
-        var data = {};
-        var link = "";
+        var data = JSON.stringify({
+            "auth":{email, password}
+        });
 
-        if(this.refs.checkBoxAdmin.checked){
-             data = JSON.stringify({
-                    "auth":{ email}
-                })
-             link = "/admin_token";
-
-
-        }else{
-            data = JSON.stringify({
-                    "auth":{"email":email,"password":password}
-                })
-            link = "/user_token";
-
-        }
 		const options={
 			method: 'POST',
 			headers: {
@@ -64,12 +49,10 @@ export class LoginForm extends Component{
 			return;
 		}
 			
-		fetch(Url+link, options)
+		fetch(Url+"/user_token", options)
     .then(handleErrors)
     .then(function(jsonResponse) {
-        let n = obtenerDatos(jsonResponse.jwt)
-				console.log(n.name)
-				localStorage.setItem('token', jsonResponse.jwt);
+    	localStorage.setItem('token', jsonResponse.jwt);
         window.location.reload()
     }).catch(function(error) {
        	swal({
@@ -79,42 +62,20 @@ export class LoginForm extends Component{
 		
 			})
     });
-
-		
-
-
-				
-			
 	}
 	render(){
-		
 		return(
 			<div className="col-md-4 col-md-offset-4" align="center">
 				<form style={{textAlign: 'center'}} id='formularioSesion' onSubmit={this.handleOnSubmitLogin}>
                     <div className="input-group">
                         <span className="input-group-addon"><i className="glyphicon glyphicon-user"/></span>
                         <input ref="email" type="text" className="form-control" name="email" placeholder="Correo Institucional"/>
-
                     </div>
                     <div className="input-group">
                         <span className="input-group-addon"><i className="glyphicon glyphicon-lock"/></span>
                         <input ref="password" type="password" className="form-control" name="password" placeholder="Contraseña"/>
-
                     </div>
-					
-
-
-
-                    <div className="input-group">
-						<span className="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Iniciar Como Admin">
-							<input type="checkbox" ref="checkBoxAdmin"aria-label="Checkbox for following text input" />
-						</span>
-                        <input className="btn btn-success width" type="submit" value="Iniciar sesion"/><br/>
-
-                    </div>
-
-
-
+                    <input className="btn btn-success width" type="submit" value="Iniciar sesion"/><br/>
 					<Link to="/recordarContraseña"> ¿Haz olvidado tu Contraseña? </Link>
 
 				</form>

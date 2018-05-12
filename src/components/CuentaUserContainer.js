@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import { Redirect } from 'react-router-dom';
 import {CuentaUser} from './CuentaUser'
 import {Delay} from "./Delay";
 import './css/cuenta.css';
 
 
 import {Url} from './Url';
-import {Forbbiden} from './Forbbiden'
+
 
 
 
@@ -153,7 +154,7 @@ render() {
      	return(
             <Delay wait={500}> <CuentaUser dependences={this.state.dependences} user={this.state.user}/></Delay>
       );
-     }else{return(<Forbbiden/>)}
+     }else{return( <Redirect to="/" />)}
     }
 
 }

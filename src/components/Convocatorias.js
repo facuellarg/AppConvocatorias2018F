@@ -2,19 +2,23 @@ import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
 import {Url} from './Url.js'
 import {Forbbiden} from './Forbbiden'
-
 import Pagination from "react-js-pagination";
 import {Form} from 'react-bootstrap/lib'
-
 import {FormGroup} from 'react-bootstrap/lib'
 import {Button} from 'react-bootstrap/lib'
 import {ControlLabel} from 'react-bootstrap/lib'
 import './css/convocatoria.css'
+import PropTypes from "prop-types";
+import swal from 'sweetalert2';
 export class Convocatorias extends Component{
-	constructor(){
-		super()
+    static contextTypes = {
+        router: PropTypes.object
+    }
+    constructor(props, context) {
+        super(props, context);
 		this.state={currentPage :1, pages :0, itemsPeerPage:10, convocations:[], verdetalle:0, dependences:[], base:{}, data:{}}
 		this.handlePageChange = this.handlePageChange.bind(this)
+        this.handleOnClickVerDetalles = this.handleOnClickVerDetalles.bind(this)
 	}
 
 	
@@ -24,34 +28,42 @@ export class Convocatorias extends Component{
 		if(!localStorage.getItem('token')){
 			 return;
 		}
-		const data1 = JSON.stringify(
-			{
-				page:1,
-			}
-			)
+		let page = Number(this.props.location.search.substring(6))
+		 /*console.log(page)
+		 if (isNaN(page)){
+             swal({
+                 type: 'error',
+                 title: 'Oops...',
+				 text: 'Url Incorrecta, intenta de nuevo'
+
+             })
+		 }*/
+		 const body = JSON.stringify({page})
 		
 		const options={
-			method: 'POST',
+            method: 'POST',
 			headers: {
 					"Authorization": localStorage.getItem('token'),
 					'Accept': 'application/json',
 				  	'Content-Type': 'application/json',
 	       },
-	       body: data1,
+			body
+
 		}
 		const options1 ={
 				method: 'GET',
 		    headers: {
 		        'Accept': 'application/json',
 	          'Content-Type': 'application/json',
-		       }
+		       },
+
 			}
 			
 
 
 		try{
 
-			let response = await fetch(Url+'/search_convocations', options);
+			let response = await fetch(`${Url}/search_convocations?page=${page}`, options);
 			let response1 =  await fetch(Url+'/dependences', options1);
 		
 			
@@ -64,8 +76,8 @@ export class Convocatorias extends Component{
 
 				});
 
-				this.setState({pages:jsonResponse.pages,convocations:jsonResponse.convocations, dependences:a})
-				
+				this.setState({currentPage :page, pages:jsonResponse.pages,convocations:jsonResponse.convocations, dependences:a})
+
 				return
 			}
 			throw new Error("No se pudo obtener las convocatorias");
@@ -82,7 +94,9 @@ export class Convocatorias extends Component{
 
 	}
 	async handlePageChange(pageNumber) {
+        this.context.router.history.push("/Convocatorias?page="+pageNumber);
 		this.state.data.page = pageNumber
+
     const data = JSON.stringify(this.state.data)
 		
 		const options={
@@ -246,7 +260,8 @@ export class Convocatorias extends Component{
   }
 
 	render(){
-		console.log(this.props.location.search.substring(6))
+    	console.log(this.state.convocations[0])
+
 		let pagination =( <div>
         <Pagination
           activePage={this.state.currentPage}
@@ -352,7 +367,7 @@ export class Convocatorias extends Component{
 			                 </td>
 			                 <td>{conovocation.type}</td>
 			                 <td>{conovocation.end_date}</td>
-			                 <td ><Link id={index} onClick={this.handleOnClickVerDetalles.bind(this)}to="/verdetalles">Ver detalles</Link></td>
+			                 <td ><Link id={index} onClick={this.handleOnClickVerDetalles}to="/verdetalles">Ver detalles</Link></td>
 			                 </tr>
 			              		)}
 

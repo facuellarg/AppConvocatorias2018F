@@ -1,19 +1,25 @@
 import React,{Component} from 'react'
 import './css/CrearConvocatoria.css'
-import ReactDOM from 'react-dom'
-
+import store from './store'
 import {Url} from "./Url";
 import swal from 'sweetalert2'
-
+let Activities=[]
+let Requeriments=[]
+let Profiles=[]
+let Required_Files=[]
 export class CrearConvocatoria extends Component{
     constructor(props){
         super(props)
-        this.state ={dependences:[], inputRequest:[], inputActivities:[], inputFiles:[]}
+        this.state ={dependences:[], inputRequest:[], inputActivities:[], inputFiles:[], inputProfiles:[]}
         this.handleOnClickRequest =  this.handleOnClickRequest.bind(this)
-        this.handleOnClickDependence = this.handleOnClickDependence.bind(this)
         this.handleOnClickActivities = this.handleOnClickActivities.bind(this)
         this.handleOnClickFiles = this.handleOnClickFiles.bind(this)
         this.handleOnClickCrear = this.handleOnClickCrear.bind(this)
+        this.onChangeActivites = this.onChangeActivites.bind(this)
+        this.onChangeRequest = this.onChangeRequest.bind(this)
+        this.onChangeFiles = this.onChangeFiles.bind(this)
+        this.onChangeProfiles = this.onChangeProfiles.bind(this)
+
     }
 
     async componentWillMount(){
@@ -21,12 +27,14 @@ export class CrearConvocatoria extends Component{
         /*if(!localStorage.getItem('token')){
             return;
         }*/
-        this.state.inputRequest.push(<input className="form-control" input="text" placeholder="Requisitos"/>)
-        this.state.inputActivities.push( <input className="form-control" input="text" placeholder="Actividad"/>)
-        this.state.inputFiles.push(<input className="form-control" input="text" placeholder="Nombre del Archivo 1"/>)
+        this.state.inputProfiles.push(<input id={0}className="form-control" input="text"onChange={this.onChangeProfiles} placeholder="Perfil"/>)
+        this.state.inputRequest.push(<input id={0}className="form-control" input="text"onChange={this.onChangeRequest} placeholder="Requisitos"/>)
+        this.state.inputActivities.push( <input id={0} className="form-control" input="text" onChange={this.onChangeActivites}  placeholder="Actividad"/>)
+        this.state.inputFiles.push(<input id={0} className="form-control" input="text" onChange={this.onChangeFiles}placeholder="Nombre del Archivo 1"/>)
         const options ={
             method: 'GET',
             headers: {
+                "Authorization": localStorage.getItem('token'),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             }
@@ -49,15 +57,36 @@ export class CrearConvocatoria extends Component{
 
     
     validateData(data){
-        let re =/^[0-9]{1,2}[/][0-9]{1,2}[/][0-9]{4}$/;
+        let re =/^([3][0-1]|[0-2][0-9]|[0-9])[/]([1][0-2]|[0-9]|[0][0-9])[/][0-9]{4}$/;
         return re.test(data)
     }
+    onChangeActivites(e){
+        const input = e.target
+        Activities[input.id] = input.value
+
+    }
+    onChangeRequest(e){
+        const input = e.target
+        Requeriments[input.id] = input.value
+
+    }
+    onChangeFiles(e){
+        const input = e.target
+        Required_Files[input.id] = input.value
+
+    }
+    onChangeProfiles(e){
+        const input = e.target
+        Profiles[input.id] = input.value
+    }
+
     handleOnClickRequest(e){
         e.preventDefault();
-        if(this.state.inputRequest.length == 3){
+        const l = this.state.inputRequest.length
+        if(l == 3){
             return;
         }
-        const a = <input className="form-control" input="text" placeholder="Requisitos"/>
+        const a = <input id={l} className="form-control" input="text" onChange={this.onChangeRequest}placeholder="Requisitos" autoFocus/>
         let temp = this.state.inputRequest;
         temp.push(a);
         this.setState({inputRequest:temp})
@@ -66,75 +95,119 @@ export class CrearConvocatoria extends Component{
     }
     handleOnClickActivities(e){
         e.preventDefault();
-        if(this.state.inputActivities.length == 3){
+        const l = this.state.inputActivities.length
+        if(l == 3){
             return;
         }
-        const a = <input className="form-control" input="text" placeholder="Actividad"/>
+        const input = <input id={l} className="form-control" input="text" onChange={this.onChangeActivites} placeholder="Actividad" autoFocus/>
+
         let temp = this.state.inputActivities;
-        temp.push(a);
+        temp.push(input);
         this.setState({inputActivities:temp})
     }
     handleOnClickFiles(e){
         e.preventDefault();
-        let n = this.state.inputFiles.length
-        if(n== 10){
+        let l = this.state.inputFiles.length
+        if(l == 10){
             return;
         }
-        n = n+1
-        const placeholder ="Nombre del Archivo " + n
-        const a = <input className="form-control" input="text" placeholder={placeholder}/>
+
+        const placeholder ="Nombre del Archivo " + (l+1)
+        const a = <input id={l} className="form-control" input="text" onChange={this.onChangeFiles} placeholder={placeholder} autoFocus/>
         let temp = this.state.inputFiles;
         temp.push(a);
         this.setState({inputFiles:temp})
     }
-    handleOnClickDependence(e){
+
+    handleOnClickCrear(e) {
         e.preventDefault();
-        /*
-        let a  = <select className="form-control">
-                    {this.state.dependences.map((dependence, key)=>
-                        <option value={dependence.id} key={key}>{dependence.name}</option>
-                    )}
-                </select>
-        render( a,  this.refs.dependences)*/
-
-    }
-    handleOnClickCrear(e){
-        e.preventDefault()
-        const name = this.refs.name.value;
-        const description = this.refs.description.value;
-        const level = this.refs.level.value;
         const end_date = this.refs.endDate.value;
-        const vacants = this.refs.name.value;
-        const hoursPeerWeek = this.refs.hours.value;
-        const payout = this.refs.payout.value;
-        const vincultaions_days = this.refs.days.value;
-        let dependences =[]
-
-        var x = this.refs.dependences;
-        for(let i = 0; i < x.length; i ++){
-            if(x.options[i].selected == true){
-                dependences.push(x.options[i].text)
-            }
-        }
-        if(!this.validateData(end_date)){
+        if (!this.validateData(end_date)) {
             swal({
                 type: 'error',
                 title: 'Fecha Incorrecta',
                 text: 'La Fecha debe estar en formato DD/MM/AAAA',
 
             })
-            //return;
+            return;
         }
 
+        let a = store.getState();
+        const admin = {
+            name: a.name,
+            lastname: a.lastname,
+            phone_ext: a.phone_ext
+        };
+        let dependences = []
+        var x = this.refs.dependences;
+        for (let i = 0; i < x.length; i++) {
+            if (x.options[i].selected == true) {
+                dependences.push(x.options[i].text)
+            }
+        }
+        const description = this.refs.description.value;
+        const duration = this.refs.days.value;
 
+        const hours_per_week = this.refs.hours.value;
+        const level = this.refs.selectLevel.value;
+        const name = this.refs.name.value;
+        const payout = this.refs.payout.value;
+        const vacants = this.refs.vacancies.value;
+        const body = JSON.stringify({
+            admin,
+            activities: Activities,
+            dependences,
+            description,
+            duration,
+            end_date,
+            hours_per_week,
+            level,
+            name,
+            payout,
+            profiles: Profiles,
+            requeriments: Requeriments,
+            required_files: Required_Files,
+            vacants
 
+        })
 
+        //console.log(body)
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body
+        }
 
+        fetch(`${Url}/convocations`, options).then((response)=>{
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        }).then(jsonResponse=>{
+            swal({
+                type:'success',
+                title:'Conovocatoria creada exitosamente'
+            })
 
-
-
+        }).catch(error=>{
+            swal({
+                type:'error',
+                title:'Error al crear convocatoria',
+                text: error.message
+            })
+        })
 
     }
+
+
+
+
+
+
+
     render(){
 
         return(
@@ -203,21 +276,13 @@ export class CrearConvocatoria extends Component{
                             </div>
                             {/*<button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickDependence}></button>*/}
                         </div>
-                        <div className="form-group">
-                            <span className="input-group-addon ">El estudiante debe ser de:</span>
-                            <div className="form-group array" ref="level" >
-                                <select className="form-control">
-
-                                    <option value={1}>Pregrado</option>
-                                    <option value={2}>Postgrado</option>
-
-                            </select>
-                            </div>
-                        </div>
                     </div>
                     <div className="col-md-4">
                         <div className="form-group" >
-                            <span className="input-group-addon"><button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickRequest}></button>Requisitos</span>
+                            <span className="input-group-addon">
+                                <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickRequest}></button>
+                                Requisitos
+                            </span>
                             <div className="form-group array" id="request" >
                                 {this.state.inputRequest}
                             </div>
@@ -225,18 +290,24 @@ export class CrearConvocatoria extends Component{
                         </div>
 
                         <div className="form-group">
-                            <span className="input-group-addon ">Actividades</span>
+                            <span className="input-group-addon ">
+                                <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickActivities}></button>
+                                Actividades
+                            </span>
                             <div className="form-group array" ref="activities" >
                                 {this.state.inputActivities}
                             </div>
-                            <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickActivities}></button>
+
                         </div>
                         <div className="form-group">
-                            <span className="input-group-addon ">Archivos Requeridos</span>
+                            <span className="input-group-addon ">
+                                <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickFiles}></button>
+                                Archivos Requeridos
+                            </span>
                             <div className="form-group array" ref="files" >
                                 {this.state.inputFiles}
                             </div>
-                            <button className="btn btn-default glyphicon glyphicon-plus" onClick={this.handleOnClickFiles}></button>
+
                         </div>
                     </div>
                     <div className="row" align="center">

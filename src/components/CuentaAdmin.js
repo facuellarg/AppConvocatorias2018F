@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import store from './store';
 import PropTypes from "prop-types";
-
+import {Link} from 'react-router-dom'
 export class CuentaAdmin extends Component{
     static contextTypes = {
         router: PropTypes.object
@@ -27,8 +27,9 @@ export class CuentaAdmin extends Component{
                    <input className="form-control" id="inputName" ref="name" type="text" readOnly="readOnly" defaultValue={`${store.getState().name}`} ></input>
                    <input className="form-control" id="inputName" ref="lastname" type="text" readOnly="readOnly" defaultValue={`${store.getState().lastname}`}></input>
                    <div className="btn-group">
-                       <button className="btn btn-default" onClick={this.handleOnClickCrearConvocatoria}>Crear convocatoria</button>
-                       <button className="btn btn-default" onClick={this.handleOnClickEstadisticas}>Ver Estadisticas</button>
+                       <Link className="btn btn-default" to="/crearconvocatoria"> Crear convocatoria</Link>
+                       <Link className="btn btn-default" to="/verestadisticas"> Ver Estadisticas</Link>
+                       <Link className="btn btn-default" to="/convocatoriaaspirantes"> Ver Aspirantes</Link>
                    </div>
                </div>
             </div>

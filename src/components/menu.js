@@ -5,7 +5,7 @@ export default [
   },
   {
     title: 'Convocatorias',
-    url: '/Convocatorias'
+    url: '/Convocatorias?page=1'
   },
   // {
   //   title: 'Cerrar Sesion',
