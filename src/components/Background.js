@@ -56,6 +56,20 @@ export class Background extends Component{
 
     
     }
+        if (localStorage.getItem('Admintoken')) {
+            let user =  (obtenerDatos(localStorage.getItem('Admintoken')));
+
+            let a;
+            await user.then(function(value) {
+                a = value
+
+
+            });
+
+            this.setState({ s_users: a})
+
+
+        }
   }
   static propTypes = {
     children: PropTypes.object.isRequired

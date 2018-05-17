@@ -118,7 +118,7 @@ export class ConvocatoriaDetalles extends Component{
                                     <div className="row" style={{ textAlign:'center'}}>
                                         <div className="btn-group" >
                                             <button className="btn-default">Agregar Convocatoria</button>
-                                            <button className="btn-default"><a href={`${Url}convocations/${this.state.convocation.id}.pdf`} target="_blank">Generar PDF</a></button>
+                                            <button className="btn-default"><a href={`${Url}/convocations/${this.state.convocation.id}.pdf`} target="_blank">Generar PDF</a></button>
                                             <button className="btn-default" onClick={this.handleOnClickAtras.bind(this)}>Atras</button>
 
                                         </div>

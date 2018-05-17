@@ -16,6 +16,8 @@ import {VerEstadisticasContainer} from "./VerEstadisticasContainer";
 import {CrearConvocatoria} from "./CrearConvocatoria";
 import {ConvocatoriaAspirantes} from "./ConvocatoriaAspirantes";
 import {Aspirantes} from "./Aspirantes";
+import {LoginFormAdmin} from "./LoginFormAdmin"
+import {DetallesAspirantes} from "./DetallesAspirantes";
 // import {LoginForm} from './LoginForm.js'
 // import {RegistForm} from './RegistForm.js'
 
@@ -24,18 +26,20 @@ import {Aspirantes} from "./Aspirantes";
 const AppRoutes = () =>
   <Background>
     <Switch>
-        <Route exact path="/CuentaUser" component={CuentaUserContainer}/>
-        <Route exact path="/Forbbiden" component={Forbbiden} />
+        <Route exact path="/cuentaUser" component={CuentaUserContainer}/>
+        <Route exact path="/forbbiden" component={Forbbiden} />
         <Route exact path="/" component={Formulario} />
         <Route exact path="/fconvocatoria" component={FiltroConvocatoria}/>
         <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
-        <Route exact path="/Convocatorias" component={Convocatorias}/>
+        <Route exact path="/convocatorias" component={Convocatorias}/>
         <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>
         <Route exact path="/verestadisticas" component={VerEstadisticasContainer}/>
-        <Route exact path="/CuentaAdmin" component={CuentaAdminContainer}/>
-        <Route exact path="/CrearConvocatoria" component={CrearConvocatoria}/>
+        <Route exact path="/cuentaAdmin" component={CuentaAdminContainer}/>
+        <Route exact path="/crearConvocatoria" component={CrearConvocatoria}/>
       <Route exact path={"/convocatoriaaspirantes"} component={ConvocatoriaAspirantes}/>
-        <Route exact path={"/aspirantes"} component={Aspirantes}/>
+        <Route exact path={"/aspirante"} component={Aspirantes}/>
+        <Route exact path={"/admin"} component={LoginFormAdmin}/>
+        <Route exact path={"/detallesAspirantes"} component={DetallesAspirantes}/>
     </Switch>
   </Background>;
 

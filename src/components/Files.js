@@ -57,7 +57,7 @@ export class Files extends React.Component {
                 <FileBase64
                     multiple={ false }
                     onDone={ this.getFiles.bind(this) } />
-                <button type= "submit" onClick={this.onSubmit} >Subir </button>
+                <button className="btn btn-default" type= "submit" onClick={this.onSubmit} >Subir </button>
                 <FileBase64
                     multiple={ false }
                     onDone={ this.getFiles.bind(this) } />

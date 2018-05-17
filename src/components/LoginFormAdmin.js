@@ -11,7 +11,7 @@ function handleErrors(response) {
     return response.json();
 }
 
-export class LoginForm extends Component{
+export class LoginFormAdmin extends Component{
     static contextTypes = {
         router: PropTypes.object
     }
@@ -67,7 +67,7 @@ export class LoginForm extends Component{
     }
     render(){
 
-            if(localStorage.getItem('Admintoken')){
+            if(!localStorage.getItem('Admintoken')){
                 return(
                     <div className="col-md-4 col-md-offset-4" align="center">
                         <form style={{textAlign: 'center'}} id='formularioSesion' onSubmit={this.handleOnSubmitLogin}>

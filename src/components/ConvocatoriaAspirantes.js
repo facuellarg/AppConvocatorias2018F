@@ -1,7 +1,6 @@
 import React,{Component} from  'react'
 import PropTypes from 'prop-types';
 import {Url} from "./Url";
-import store from  './store.js'
 import swal from 'sweetalert2';
 import {Link} from 'react-router-dom'
 
@@ -19,21 +18,22 @@ export class ConvocatoriaAspirantes extends Component{
     }
     constructor(props, context) {
         super(props, context);
-        this.state = {convocations:[], aspirants:[]}
+        this.state = {convocations:[0], aspirants:[]}
         this.handleOnClickVerAspirantes = this.handleOnClickVerAspirantes.bind(this)
 
     }
 
     componentWillMount(){
 
-        fetch(`${Url}/convocations?admin_id=${store.getState().id}`,options).then(response=>{
+        fetch(`${Url}/admin_convocations`,options).then(response=>{
             if(!response.ok){
-                console.log(response.json())
+
                 throw new Error(response.status);
             }
             return response.json()
         }).then(jsonResponse=>{
-            this.setState({convocations:jsonResponse.convocations})
+
+            this.setState({convocations: jsonResponse})
         }).catch(error=>{
             swal({
                 type:'error',
@@ -46,24 +46,13 @@ export class ConvocatoriaAspirantes extends Component{
 
 
     handleOnClickVerAspirantes(e) {
-        fetch(`${Url}/convocations/aspirantes`, options).then(response => {
-            if(!response.ok){
-                throw new Error(response.status)
-            }
-            return response.json()
-        }).then(jsonResponse=>{
-        this.setState({aspitantes:jsonResponse})
+        const id = e.target.id
 
-        }).catch(error=>{
-            swal({
-                type:'error',
-                title: 'Algo fallo ...',
-                text: 'no se pudieron obtener los aspirantes'+error.message
-            })
-        })
+
     }
 
     render(){
+        console.log(this.state.aspirants)
         return(<div className='container-fluid'>
             <div className='col-md-6 ' align="center">
                 <table>
@@ -76,13 +65,14 @@ export class ConvocatoriaAspirantes extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.convocations.map((convocation,key)=>{
-                            <tr key={key}>
+
+                        {this.state.convocations.map((convocation)=>
+                            <tr key={convocation.id}>
                                 <td>{convocation.name}</td>
                                 <td>{convocation.end_date}</td>
-                                <td id={convocation.id} onClick={this.handleOnClickVerAspirantes}> Ver Aspirantes</td>
+                                <td  ><Link to={`/detallesAspirantes?id=${convocation.id}`} >Ver Detalles</Link></td>
                             </tr>
-                        })}
+                        )}
                     </tbody>
                 </table>
             </div>
@@ -92,12 +82,13 @@ export class ConvocatoriaAspirantes extends Component{
                         <th className='header'> Estudiante</th>
                         <th className='header'> Ver Archivos</th>
                     </thead>
-                    {this.state.aspirants.map((aspirant, key)=>{
-                        <tr key={key}>
+                    {this.state.aspirants && this.state.aspirants.map(
+                        (aspirant)=>
+                        <tr key={aspirant.id}>
                             <td>{aspirant.email}</td>
-                            <Link to={`/aspiarante?id=${aspirant.id}`}  ></Link>
+                            <td><Link to={`/aspirante?id=${aspirant.id}`}  >Ver Archivos</Link></td>
                         </tr>
-                    })}
+                    )}
                 </table>
 
             </div>
