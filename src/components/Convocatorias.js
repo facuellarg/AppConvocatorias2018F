@@ -9,7 +9,6 @@ import {Button} from 'react-bootstrap/lib'
 import {ControlLabel} from 'react-bootstrap/lib'
 import './css/convocatoria.css'
 import PropTypes from "prop-types";
-import swal from 'sweetalert2';
 export class Convocatorias extends Component{
     static contextTypes = {
         router: PropTypes.object

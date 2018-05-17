@@ -28,6 +28,7 @@ export class ConvocatoriaAspirantes extends Component{
 
         fetch(`${Url}/convocations?admin_id=${store.getState().id}`,options).then(response=>{
             if(!response.ok){
+                console.log(response.json())
                 throw new Error(response.status);
             }
             return response.json()

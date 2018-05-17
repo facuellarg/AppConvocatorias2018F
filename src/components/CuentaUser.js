@@ -186,8 +186,6 @@ export class CuentaUser extends Component{
 
                     <tbody>
                     {this.state.documents.map((obj=>{
-
-
                         <td>
                             <a href= {String(this.state.documents[3])} target="_blank" > obj </a>
                         </td>

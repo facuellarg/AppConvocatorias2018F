@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {Url} from './Url.js'
 import axios from 'axios'
 import FileBase64 from 'react-file-base64';

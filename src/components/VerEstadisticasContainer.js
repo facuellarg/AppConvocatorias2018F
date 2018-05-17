@@ -22,13 +22,6 @@ export class VerEstadisticasContainer extends Component{
             },
 
         }
-        const options1 ={
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }
         try{
 
             let response = await fetch(Url+'/search_convocations', options);

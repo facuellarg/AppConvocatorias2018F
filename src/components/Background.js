@@ -8,7 +8,6 @@ import store from './store.js'
 import PropTypes from 'prop-types';
 import {obtenerDatos} from './obtenerDatos.js'
 
-
 import './css/convocatoria.css'
 import './css/bootstrap.min.css';
 import './css/bootstrap-theme.min.css' ;
@@ -19,6 +18,7 @@ import './css/tablet.css' ;
 import './css/phone.css' ;
 import './css/small.css' ;
 import './css/formulario.css' ;
+
 /*
 import './css/printer.css' ;
 import "./js/jquery.js" ;
@@ -27,10 +27,10 @@ import "./js/unal.js" ;
 */
 
 
-import sealColombia from './images/sealColombia.png';
+/*import sealColombia from './images/sealColombia.png';
 import escudoUnal from './images/escudoUnal.png';
 import escudoUnalSvg from './images/escudoUnal.svg';
-import escudoUnal_black from './images/escudoUnal_black.png';
+import escudoUnal_black from './images/escudoUnal_black.png';*/
 import {Maps} from "./Maps";
 
 

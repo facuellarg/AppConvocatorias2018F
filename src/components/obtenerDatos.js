@@ -9,9 +9,15 @@ export function obtenerDatos(loginParams){
    }), 
     })
       .then((res) => {
-        return res.json()
+        if(!res.ok){
+            throw new Error(res.status + " "+res.code)
+        }return res.json()
       }
-     )
+     ).then(jsonResponse=>{
+         return jsonResponse
+       }).catch(error=>{console.log(error.message)}
+
+       )
 }
 
   
