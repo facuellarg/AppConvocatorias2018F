@@ -10,7 +10,7 @@ export function obtenerDatos(loginParams){
     })
       .then((res) => {
         return res.json()
-          console.log()
+
       }
      )
 }

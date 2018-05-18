@@ -98,9 +98,10 @@ export class Background extends Component{
 
     this.updateRedux()
     const { children } = this.props;
-    console.log("HOla")
-			
+
+        console.log(this.state.s_users)
     return (
+
      
         <body>
         	<Header items={items} />

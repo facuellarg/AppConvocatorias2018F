@@ -4,14 +4,27 @@ import {Url} from './Url.js'
 import PropTypes from "prop-types";
 import {Forbbiden} from './Forbbiden'
 import  './css/ConvocatoriaDetalles.css';
+import swal from 'sweetalert2'
+const options ={
+    method: 'POST',
+    headers: {
+        "Authorization": localStorage.getItem('token'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+
+}
 
 export class ConvocatoriaDetalles extends Component{
+
 	static contextTypes = {
     router: PropTypes.object
 	  }
 	  constructor(props, context) {
      super(props, context);
 			this.state = {convocation:[]}
+
+          this.handleOnClickAddConvocation= this.handleOnClickAddConvocation.bind(this)
 	}
 	componentWillMount(){
 		if(!localStorage.getItem('token')){
@@ -20,9 +33,45 @@ export class ConvocatoriaDetalles extends Component{
 		this.setState({convocation:JSON.parse(localStorage.getItem('convocation'))})
 		
 	}
+
 	handleOnClickAtras(){
 		this.context.router.history.push("/Convocatorias")
 	}
+    handleOnClickAddConvocation(){
+	    const body = JSON.stringify({
+            convocation_id:this.state.convocation.id
+        })
+        const options ={
+            method: 'POST',
+            headers: {
+                "Authorization": localStorage.getItem('token'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body
+
+        }
+	    fetch(`${Url}/applications`,options).then(response=>{
+	        if(!response.ok){
+              
+	            throw new Error (response.status)
+
+            }return response.json()
+        }).then(jsonResponse=>{
+            swal({
+                type:"success",
+                title: "convocatoria agregada con exito",
+                text:jsonResponse
+            })
+        }).catch(error=>{
+            swal({
+                type:"error",
+                title: "convocatoria no agregada con exito",
+                text:':/ '+ error.message
+            })
+        })
+
+    }
 
 	render(){
 			if(localStorage.getItem('token')){
@@ -117,7 +166,7 @@ export class ConvocatoriaDetalles extends Component{
                                 <div className="col-md-12">
                                     <div className="row" style={{ textAlign:'center'}}>
                                         <div className="btn-group" >
-                                            <button className="btn-default">Agregar Convocatoria</button>
+                                            <button className="btn-default" onClick={this.handleOnClickAddConvocation}>Agregar Convocatoria</button>
                                             <button className="btn-default"><a href={`${Url}/convocations/${this.state.convocation.id}.pdf`} target="_blank">Generar PDF</a></button>
                                             <button className="btn-default" onClick={this.handleOnClickAtras.bind(this)}>Atras</button>
 

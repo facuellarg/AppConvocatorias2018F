@@ -119,6 +119,37 @@ export class CrearConvocatoria extends Component{
         this.setState({inputFiles:temp})
     }
 
+    parseDescription(array){
+        let out_obj = {}
+        array.forEach((attr,index)=>{
+            out_obj[String(index)] = {
+                description: attr
+            }
+        })
+        console.log("entro " + array)
+        console.log("salio " + out_obj)
+        return out_obj
+    }
+    parseName(array){
+        let out_obj = {}
+        array.forEach((attr,index)=>{
+            out_obj[String(index)] = {
+                name: attr
+            }
+        })
+        return out_obj
+    }
+
+    parseDependences(array){
+        let out_obj = {}
+        array.forEach((attr,index)=>{
+            out_obj[String(index)] = {
+                dependence_id: attr
+            }
+        })
+        return out_obj
+    }
+
     handleOnClickCrear(e) {
         e.preventDefault();
         const end_date = this.refs.endDate.value;
@@ -142,7 +173,7 @@ export class CrearConvocatoria extends Component{
         var x = this.refs.dependences;
         for (let i = 0; i < x.length; i++) {
             if (x.options[i].selected == true) {
-                dependences.push(x.options[i].text)
+                dependences.push(x.options[i].value)
             }
         }
         const description = this.refs.description.value;
@@ -153,10 +184,11 @@ export class CrearConvocatoria extends Component{
         const name = this.refs.name.value;
         const payout = this.refs.payout.value;
         const vacants = this.refs.vacancies.value;
+
         const body = JSON.stringify({
             admin,
-            activities: Activities,
-            dependences,
+            activities_attributes: this.parseDescription(Activities),
+            convocation_dependences_attributes:this.parseDependences(dependences),
             description,
             duration,
             end_date,
@@ -164,17 +196,18 @@ export class CrearConvocatoria extends Component{
             level,
             name,
             payout,
-            profiles: Profiles,
-            requeriments: Requeriments,
-            required_files: Required_Files,
+            profiles_attributes: this.parseDescription(Profiles),
+            requeriments_attributes: this.parseDescription(Requeriments),
+            required_files_attributes: this.parseName(Required_Files),
             vacants
 
         })
 
-        //console.log(body)
+        console.log(body)
         const options = {
             method: 'POST',
             headers: {
+                "Authorization": localStorage.getItem('Admintoken'),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

@@ -4,6 +4,7 @@ import {Url} from './Url.js'
 import PropTypes from "prop-types";
 import {Forbbiden} from './Forbbiden'
 import  './css/ConvocatoriaDetalles.css';
+import './css/DetallesConvocatoria.css'
 import Modal from 'react-responsive-modal';
 
 const options ={
@@ -14,17 +15,29 @@ const options ={
     }
 
 }
+let a =  (<select id="posibilidad">
+    <option value="aprobado">
+        Aprobado
+    </option >
+    <option value="rechazado">
+        Rechazado
+    </option >
+    <option value="interesado">
+        Interesado
+    </option >
+</select>)
 export class DetallesAspirantes extends Component{
     static contextTypes = {
         router: PropTypes.object
     }
     constructor(props, context) {
         super(props, context);
-        this.state = {convocation:[], aspirantr:[], open: false, currentUser:{}, files:[]}
+        this.state = {convocation:[], approved:[],rejected:[],interested:[], open: false, currentUser:{}, files:[]}
         this.handleOnCLicVerDocumentosAproved = this.handleOnCLicVerDocumentosAproved.bind(this)
         this.handleOnCLicVerDocumentosInteresting = this.handleOnCLicVerDocumentosInteresting.bind(this)
         this.handleOnCLicVerDocumentosRejected = this.handleOnCLicVerDocumentosRejected.bind(this)
         this.onCloseModal = this.onCloseModal.bind(this)
+        this.handleOnClickModificar = this.handleOnClickModificar.bind(this)
     }
     componentWillMount(){
         if(!localStorage.getItem('Admintoken')){
@@ -46,11 +59,13 @@ export class DetallesAspirantes extends Component{
                 title: 'Algo fallo ...',
                 text: 'no se pudieron obtener los aspirantes'+error.message
             })
+
         })
 
     }
 
     handleOnCLicVerDocumentosAproved(e){
+
         const index = e.target.id;
         let files=[];
         const currentUser = this.state.convocation.approved[index];
@@ -84,7 +99,7 @@ export class DetallesAspirantes extends Component{
     handleOnCLicVerDocumentosRejected(e){
         const index = e.target.id;
         let files=[];
-        const currentUser = this.state.convocation.reject[index];
+        const currentUser = this.state.convocation.rejected[index];
 
         fetch(`${Url}/admin_files?user_id=${currentUser.id}`,options).then(response =>{
             if(!response.ok){
@@ -111,7 +126,49 @@ export class DetallesAspirantes extends Component{
 
     }
 
+    handleOnClickModificar(){
+        const state = (document.getElementById('posibilidad').value)
+        console.log(state)
+        const options1 = {
+            method:'PUT',
+            headers: {
+                "Authorization": localStorage.getItem('Admintoken'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify({state})
 
+        }
+        swal({
+            title: `¿Desea Modificar al estudiante ${this.state.currentUser.name}?`,
+            showCancelButton: true,
+            confirmButtonText: 'Modificar',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`${Url}/applications/${this.state.currentUser.application_id}`, options1)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        swal.showValidationError(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !swal.isLoading()
+        }).then((result) => {
+            if (result.value) {
+                swal({
+                    type: 'success',
+                    title:'usuario modificado con exito'
+                })
+                window.location.reload();
+            }
+        })
+    }
 
     handleOnCLicVerDocumentosInteresting(e){
         const index = e.target.id;
@@ -151,7 +208,7 @@ export class DetallesAspirantes extends Component{
 
     render(){
         const {open} = this.state;
-        console.log(this.state.files)
+        console.log(this.state.convocation)
         if(localStorage.getItem('Admintoken')){
             return(
                 <div>
@@ -286,7 +343,7 @@ export class DetallesAspirantes extends Component{
                             <th>Nombre</th>
                             <th>Ver Documentos</th>
                             </thead>
-                            {this.state.convocation.reject && this.state.convocation.reject.map((aspirant, index)=>
+                            {this.state.convocation.rejected && this.state.convocation.rejected.map((aspirant, index)=>
                                 <tr key={index}>
 
                                     <td>{`${aspirant.name} ${aspirant.lastname}`}</td>
@@ -298,33 +355,25 @@ export class DetallesAspirantes extends Component{
                         <Modal
                             open={open}
                             onClose={this.onCloseModal}
-                            center
-                            classNames={{
-                                transitionEnter: 'transition-enter',
-                                transitionEnterActive: 'transition-enter-active',
-                                transitionExit: 'transition-exit-active',
-                                transitionExitActive: 'transition-exit-active',
-                            }}
-                            animationDuration={1000}>
+                            center>
                             <div className="panel panel-default">
-                                <div className="panel-heading">{`${this.state.currentUser.name} ${this.state.currentUser.lastname}`}</div>
-                                <div className="panel-body">
+                                <div className="panel-heading">{`${this.state.currentUser.name} ${this.state.currentUser.lastname} Estado:${this.state.currentUser.state}`}</div>
+                                <div className="panel-body col-md-12">
                                     <ol>
                                         { this.state.files.map((file, index)=>
                                            <li key={index}><a target="_blank" href={`${Url}${file.file.url}`}>{file.name || "archivo"}</a></li>
                                         )}
                                     </ol>
-                                    <select>
-                                        <option value="aprovado">
-                                            Aprobado
-                                        </option >
-                                        <option value="rechazado">
-                                            Rechazado
-                                        </option >
-                                        <option value="interesado">
-                                            Interesado
-                                        </option >
-                                    </select>
+                                    <div className="container-fluid">
+
+                                            <div className="col-md-8">
+                                                {a}
+                                            </div>
+                                            <div className="col-md-4">
+                                                <button  onClick={this.handleOnClickModificar}>Modificar</button>
+                                            </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </Modal>
