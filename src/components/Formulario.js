@@ -35,13 +35,16 @@ export class Formulario extends Component{
 
 		componentWillMount(){
 
-			if (localStorage.getItem('token')) {
-			  obtenerDatos(localStorage.getItem('token')).then((users) => {
-				this.context.router.history.push("/CuentaUser")
-     
-	      })
+		if (localStorage.getItem('token')) {
+		  obtenerDatos(localStorage.getItem('token')).then((users) => {
+			this.context.router.history.push("/CuentaUser")
+		  })
+	    }else if( localStorage.getItem('Admintoken')){
+			obtenerDatos(localStorage.getItem('Admintoken')).then((users) => {
+                this.context.router.history.push("/cuentaAdmin")
+			})
 
-	    }else{this.setState({isLogged:0})}
+		}else{this.setState({isLogged:0})}
 
 
 		}

@@ -13,18 +13,21 @@ export class CuentaUser extends Component{
     constructor(props){
         super(props)
         this.state = {
-            documents: []
+            documents: [],
+            currentFile:0
         }
 
         this.onClickActualizar = this.onClickActualizar.bind(this);
         this.onClickGuardar = this.onClickGuardar.bind(this);
         this.handleFiles=this.handleFiles.bind(this);
+        this.handleOnClickLeft = this.handleOnClickLeft.bind(this);
+        this.handleOnClickRight = this.handleOnClickRight.bind(this);
     }
 
     handleFiles(){
 
 
-        let axiosConfig = {
+        /*let axiosConfig = {
             headers: {
                 "Authorization": localStorage.getItem('token'),
                 'Content-Type': 'application/json;'
@@ -32,27 +35,33 @@ export class CuentaUser extends Component{
         };
         axios.get(`${Url}/documents`, axiosConfig)
             .then(function (response) {
-
-
-
                 response.data.forEach(function(obj){
-
                     aux.push(obj.file.url)
-                    console.log(aux)
-
                 })
-
-
-
-
             })
-
-
             .catch(function (error) {
                 console.log(error)
             });
-        this.setState({documents: (aux)})
-        console.log("this state"+this.state.documents)
+        this.setState({documents: (aux)})*/
+        const options={
+            headers: {
+                "Authorization": localStorage.getItem('token'),
+                'Content-Type': 'application/json;'
+            }
+        }
+
+        fetch(`${Url}/documents`,options).then(res=>{
+            if(!res.ok){
+                throw new Error(res.status+" "+res.code)
+            }return res.json()
+        }).then(jsonResponse=>{
+            this.setState({documents:jsonResponse})
+            console.log(this.state.documents)
+        }).catch(error=>{
+            console.log(error.message)
+        })
+
+
     }
 
 
@@ -61,7 +70,21 @@ export class CuentaUser extends Component{
         this.refs.selectLevel.value = store.getState().level;
     }
 
+    handleOnClickLeft(){
+        let cf= this.state.currentFile
+        if(cf>0){
+            cf = cf - 1;
+            this.setState({currentFile: cf})
+        }
+    }
+    handleOnClickRight(){
+        let cf= this.state.currentFile
+        if(cf < this.state.documents.length -1){
+            cf = cf + 1;
+            this.setState({currentFile: cf})
 
+        }
+    }
     onClickActualizar(){
 
 
@@ -103,9 +126,9 @@ export class CuentaUser extends Component{
             console.log(jsonResponse);
             if(response.ok){
                 swal({
-                  type: 'success',
-                  title: 'Datos Actualizados',
-                 
+                    type: 'success',
+                    title: 'Datos Actualizados',
+
                 })
                 this.refs.selectDependence.setAttribute('disabled','disabled');
                 this.refs.selectLevel.setAttribute('disabled','disabled');
@@ -122,7 +145,6 @@ export class CuentaUser extends Component{
     }
 
     render() {
-        console.log(store.getState())
 
         return(
 
@@ -141,7 +163,26 @@ export class CuentaUser extends Component{
                                 <div className="clear">
                                     <div className="col-md-4">
                                         <div className="container-fluid">
-                                                <Files/>
+                                            <Files/>
+
+                                        </div>
+
+                                        <div class= "col-md-4" >
+                                            <br/>
+                                            <div style = {{marginLeft: `${10}px`}}>
+
+                                                <button  className= "btn btn-success" onClick={this.handleFiles}>ver archivos</button>
+
+                                            </div>
+                                            <div>
+                                                <ol>
+                                                    {this.state.documents && this.state.documents.map((doc,key)=>
+                                                        <li key={key}><a target="_blank" href={`${Url}/${doc.file.url}`}>{doc.name || "Archivo"}</a></li>
+                                                    )}
+                                                </ol>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                     <div className="col-sm-4 padding-profile">
@@ -165,16 +206,18 @@ export class CuentaUser extends Component{
                                         </select><br/>
                                         {/*<input className="input"id="inputPapa"type="number" ref="PAPA" placeholder="Ingrese su PAPA" min="0" max="5" readOnly="readOnly"  defaultValue={`${store.getState().PAPA}`}></input><br/>
 												<input  className="input"id="inputPbm" type="number" ref="PBM" placeholder = "Ingrese su PBM" min="0"  readOnly="readOnly" defaultValue={`${store.getState().PBM}`}></input><br/>*/}
-
-
-
-
-
-                                        <div  className="btn-gruop">
-                                            <button id ="botonGuardar" className="btn btn-default" onClick={this.onClickActualizar} >Modificar Datos</button>
-                                            <button id ="botonCerrar" className="btn btn-default" onClick={this.onClickGuardar} ref="guardar" >Guardar Cambios</button>
-
+										<div className="row">
+                                            <div className="col-md-12 container-fluid">
+                                                <div  className="btn-group">
+                                                    <button id ="botonGuardar" className="btn btn-success" onClick={this.onClickActualizar} >Modificar Datos</button>
+                                                    <button id ="botonCerrar" className="btn btn-default" onClick={this.onClickGuardar} ref="guardar" >Guardar Cambios</button>
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
+
+
+
                                     </div>
                                 </div>
 
@@ -182,31 +225,7 @@ export class CuentaUser extends Component{
                         </div>
                     </div>
                 </div>
-                <table>
-
-                    <tbody>
-                    {this.state.documents.map((obj=>{
-                        <td>
-                            <a href= {String(this.state.documents[3])} target="_blank" > obj </a>
-                        </td>
-                    }))}
-                    </tbody>
-
-                </table>
-                <button onClick={this.handleFiles}>ver archivos</button>
-                <ul>
-
-                    <li><a href= {String(Url) + String(this.state.documents[0])} target="_blank" > {this.state.documents[0]} </a></li>
-                    <li><a href= {String(Url) + String(this.state.documents[1])} target="_blank" > {this.state.documents[1]} </a></li>
-                    <li><a href= {String(Url) + String(this.state.documents[2])} target="_blank" > {this.state.documents[2]} </a></li>
-                    <li><a href= {String(Url) + String(this.state.documents[3])} target="_blank" > {this.state.documents[3]} </a></li>
-                    <li><a href= {String(Url) + String(this.state.documents[4])} target="_blank" > {this.state.documents[4]} </a></li>
-
-
-                </ul>
-
             </div>
-
         );
 
 

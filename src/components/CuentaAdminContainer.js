@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {CuentaAdmin} from "./CuentaAdmin";
 import {Delay} from "./Delay";
 import {Url} from "./Url";
+import {Redirect} from 'react-router-dom'
 
 export class CuentaAdminContainer extends Component{
     constructor(){
@@ -10,7 +11,7 @@ export class CuentaAdminContainer extends Component{
 
     }
     async componentWillMount() {
-        if (!localStorage.getItem('token')) {
+        if (!localStorage.getItem('Admintoken')) {
             return;
         }
 
@@ -46,11 +47,16 @@ export class CuentaAdminContainer extends Component{
 
     }
         render(){
-            console.log(this.state.dependences)
-        return(
+            if(localStorage.getItem('Admintoken')){
+                return(
 
-            <div align="center"><Delay wait={500}> <CuentaAdmin/></Delay></div>
-        )
+                    <div align="center"><Delay wait={500}> <CuentaAdmin/></Delay></div>
+                )
+            }else{
+                return(<Redirect to="/"/>)
+
+            }
+
     }
 
 }

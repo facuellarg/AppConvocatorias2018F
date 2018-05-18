@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {VerEstadisticas} from "./VerEstadisticas";
 import {Url} from "./Url";
+import {Redirect} from 'react-router-dom'
 
 export class VerEstadisticasContainer extends Component{
     constructor(){
@@ -42,8 +43,14 @@ export class VerEstadisticasContainer extends Component{
 
     }
     render(){
-        return(
-            <VerEstadisticas conovocatorias={this.state.convocations}/>
-        )
+        if(localStorage.getItem('Admintoken')){
+            return(
+                <VerEstadisticas conovocatorias={this.state.convocations}/>
+            )
+        }else{
+            return(<Redirect to="/"/>)
+
+        }
+
     }
 }

@@ -35,7 +35,7 @@ export class ConvocatoriaDetalles extends Component{
 	}
 
 	handleOnClickAtras(){
-		this.context.router.history.push("/Convocatorias")
+		this.context.router.history.push("/Convocatorias?page=1")
 	}
     handleOnClickAddConvocation(){
 	    const body = JSON.stringify({
@@ -53,7 +53,7 @@ export class ConvocatoriaDetalles extends Component{
         }
 	    fetch(`${Url}/applications`,options).then(response=>{
 	        if(!response.ok){
-              
+
 	            throw new Error (response.status)
 
             }return response.json()

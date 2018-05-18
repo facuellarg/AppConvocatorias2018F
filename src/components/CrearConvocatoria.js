@@ -3,6 +3,7 @@ import './css/CrearConvocatoria.css'
 import store from './store'
 import {Url} from "./Url";
 import swal from 'sweetalert2'
+import {Redirect} from 'react-router-dom'
 let Activities=[]
 let Requeriments=[]
 let Profiles=[]
@@ -24,9 +25,9 @@ export class CrearConvocatoria extends Component{
 
     async componentWillMount(){
 
-        /*if(!localStorage.getItem('token')){
+        if(!localStorage.getItem('Admintoken')){
             return;
-        }*/
+        }
         this.state.inputProfiles.push(<input id={0}className="form-control" input="text"onChange={this.onChangeProfiles} placeholder="Perfil"/>)
         this.state.inputRequest.push(<input id={0}className="form-control" input="text"onChange={this.onChangeRequest} placeholder="Requisitos"/>)
         this.state.inputActivities.push( <input id={0} className="form-control" input="text" onChange={this.onChangeActivites}  placeholder="Actividad"/>)
@@ -34,7 +35,7 @@ export class CrearConvocatoria extends Component{
         const options ={
             method: 'GET',
             headers: {
-                "Authorization": localStorage.getItem('token'),
+                "Authorization": localStorage.getItem('Admintoken'),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             }
@@ -242,7 +243,9 @@ export class CrearConvocatoria extends Component{
 
 
     render(){
-
+        if(!localStorage.getItem('Admintoken')){
+            return <Redirect to="/" />
+        }
         return(
             <div className="container-fluid">
                 <form autoComplete="off">

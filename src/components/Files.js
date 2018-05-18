@@ -1,14 +1,18 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Url} from './Url.js'
 import axios from 'axios'
 import FileBase64 from 'react-file-base64';
+import swal from 'sweetalert2'
+
+
 
 export class Files extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            files: [],
+            files: []
 
         }
         this.onSubmit=this.onSubmit.bind(this);
@@ -30,50 +34,41 @@ export class Files extends React.Component {
 
 
         }, axiosConfig)
-            .then(function (response) {
-                //  this.setState({response.data.id});
-
+            .then(response => {
+                swal({
+                    type:'success',
+                    title:'Archivo Subido'
+                })
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch(error => {
+                swal({
+                    type:'error',
+                    title:'Error al subir archivo',
+                    text: error.message
+                })
             });
-
     }
-
-
-
-
-
-
-
     // Callback~
     getFiles(files){
         this.setState({ files: files })
     }
 
+
+
     render() {
+
         return (
-            <div >
+
+            <div class="col-md-3">
+
                 <FileBase64
                     multiple={ false }
-                    onDone={ this.getFiles.bind(this) } />
-                <button className="btn btn-default" type= "submit" onClick={this.onSubmit} >Subir </button>
-                <FileBase64
-                    multiple={ false }
-                    onDone={ this.getFiles.bind(this) } />
+                    onDone={this.getFiles.bind(this)}  />
                 <button type= "submit" onClick={this.onSubmit} >Subir </button>
-                <FileBase64
-                    multiple={ false }
-                    onDone={ this.getFiles.bind(this) } />
-                <button type= "submit" onClick={this.onSubmit} >Subir </button>
-                <FileBase64
-                    multiple={ false }
-                    onDone={ this.getFiles.bind(this) } />
-                <button type= "submit" onClick={this.onSubmit} >Subir </button>
-                <FileBase64
-                    multiple={ false }
-                    onDone={ this.getFiles.bind(this) } />
-                <button type= "submit" onClick={this.onSubmit} >Subir </button>
+
+
+
+
             </div>
         )
     }

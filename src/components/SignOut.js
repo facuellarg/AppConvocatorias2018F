@@ -14,7 +14,7 @@ onClickCerrarSesion(){
 	
 
 	render(){
-		if (localStorage.getItem('token')){
+		if (localStorage.getItem('token') || localStorage.getItem('Admintoken') ){
 			return(<li><Link  onClick={this.onClickCerrarSesion}to="/">Cerrar Sesion</Link></li>)
 		}else{return(<li><Link to="/">Inicio Sesion</Link></li>)
 	}

@@ -85,6 +85,8 @@ export class LoginFormAdmin extends Component{
                         </form>
                     </div>
                 )
+            }else if(!localStorage.getItem('token')){
+                return( <Redirect to="/" />)
             }else{
                 return( <Redirect to="/CuentaAdmin" />)
             }

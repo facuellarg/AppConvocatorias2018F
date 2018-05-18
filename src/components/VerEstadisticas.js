@@ -55,7 +55,9 @@ export class VerEstadisticas extends  Component{
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(148, 180, 59,0.5)',
                     hoverBorderColor: 'rgba(148, 180, 59,1)',
+
                     data
+
                 }
             ]
         };
@@ -67,7 +69,10 @@ export class VerEstadisticas extends  Component{
                     width={100}
                     height={400}
                     options={{
-                        maintainAspectRatio: false
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [{id: 'y-axis-1', type: 'linear', position: 'left', ticks: {min: 0, max:5}}]
+                        },
                     }}
                 />
             </div>

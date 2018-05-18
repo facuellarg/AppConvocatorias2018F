@@ -29,7 +29,6 @@ const AppRoutes = () =>
         <Route exact path="/cuentaUser" component={CuentaUserContainer}/>
         <Route exact path="/forbbiden" component={Forbbiden} />
         <Route exact path="/" component={Formulario} />
-        <Route exact path="/fconvocatoria" component={FiltroConvocatoria}/>
         <Route exact path="/recordarContraseña" component={RecordarContraseña}/>
         <Route exact path="/convocatorias" component={Convocatorias}/>
         <Route exact path="/verdetalles" component={ConvocatoriaDetalles}/>

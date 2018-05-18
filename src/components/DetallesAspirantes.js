@@ -3,8 +3,6 @@ import swal from 'sweetalert2';
 import {Url} from './Url.js'
 import PropTypes from "prop-types";
 import {Forbbiden} from './Forbbiden'
-import  './css/ConvocatoriaDetalles.css';
-import './css/DetallesConvocatoria.css'
 import Modal from 'react-responsive-modal';
 
 const options ={
