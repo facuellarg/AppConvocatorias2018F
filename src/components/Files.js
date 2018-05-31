@@ -20,18 +20,14 @@ export class Files extends React.Component {
 
 
     onSubmit(e){
-
-
         let axiosConfig = {
             headers: {
                 "Authorization": localStorage.getItem('token'),
                 'Content-Type': 'application/json;'
-
             }
         };
         axios.post(`${Url}/documents`, {
             file: this.state.files.base64
-
 
         }, axiosConfig)
             .then(response => {
@@ -50,6 +46,7 @@ export class Files extends React.Component {
     }
     // Callback~
     getFiles(files){
+        console.log(this.refs.fileb)
         this.setState({ files: files })
     }
 
@@ -57,13 +54,17 @@ export class Files extends React.Component {
 
     render() {
 
+
         return (
 
-            <div class="col-md-3">
+            <div className="col-md-3">
 
-                <FileBase64
-                    multiple={ false }
-                    onDone={this.getFiles.bind(this)}  />
+                <div >
+                    <FileBase64 ref="fileb"
+                                       multiple={ false }
+                                       onDone={this.getFiles.bind(this)}  />
+                </div>
+
                 <button type= "submit" onClick={this.onSubmit} >Subir </button>
 
 

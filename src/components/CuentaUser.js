@@ -3,9 +3,9 @@ import './css/cuenta.css';
 
 import store from './store';
 import {Url} from './Url';
-import axios from 'axios'
 import {Files} from './Files.js';
 import swal from 'sweetalert2'
+import Modal from 'react-responsive-modal';
 
 var aux = []
 
@@ -13,8 +13,9 @@ export class CuentaUser extends Component{
     constructor(props){
         super(props)
         this.state = {
-            documents: [],
-            currentFile:0
+            documents: [{name:"",file:{url:""}}],
+            currentFile:0,
+            open: false
         }
 
         this.onClickActualizar = this.onClickActualizar.bind(this);
@@ -22,6 +23,7 @@ export class CuentaUser extends Component{
         this.handleFiles=this.handleFiles.bind(this);
         this.handleOnClickLeft = this.handleOnClickLeft.bind(this);
         this.handleOnClickRight = this.handleOnClickRight.bind(this);
+        this.onCloseModal = this.onCloseModal.bind(this)
     }
 
     handleFiles(){
@@ -55,7 +57,7 @@ export class CuentaUser extends Component{
                 throw new Error(res.status+" "+res.code)
             }return res.json()
         }).then(jsonResponse=>{
-            this.setState({documents:jsonResponse})
+            this.setState({documents:jsonResponse, open:true})
             console.log(this.state.documents)
         }).catch(error=>{
             console.log(error.message)
@@ -143,8 +145,12 @@ export class CuentaUser extends Component{
             console.log(error)
         }
     }
+    onCloseModal = () => {
+        this.setState({ open: false });
+    };
 
     render() {
+        const {open} = this.state;
 
         return(
 
@@ -175,10 +181,35 @@ export class CuentaUser extends Component{
 
                                             </div>
                                             <div>
+                                                <Modal
+                                                    open={open}
+                                                    onClose={this.onCloseModal}
+                                                    center>
+                                                    <div className="panel panel-default">
+                                                        <div className="panel-heading">{this.state.currentFile}</div>
+                                                        <div className="panel-body col-md-12">
+                                                            <div className="container-fluid" align="center" >
+                                                                <object width="50%"
+                                                                        data={`${Url}/${this.state.documents[this.state.currentFile].file.url}`}>
+                                                                </object>
+
+
+                                                                <div className="row">
+                                                                    <div className="btn-group" align="center">
+                                                                        <button className="btn btn-default" onClick={this.handleOnClickLeft} ref="left"><i className="fa fa-caret-left"></i></button>
+                                                                        <button className="btn btn-default"> <i className="fa fa-trash"></i></button>
+                                                                        <button className="btn btn-default"  onClick={this.handleOnClickRight} ref="right"><i className="fa fa-caret-right"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </Modal>
                                                 <ol>
-                                                    {this.state.documents && this.state.documents.map((doc,key)=>
+                                                    {/*this.state.documents && this.state.documents.map((doc,key)=>
                                                         <li key={key}><a target="_blank" href={`${Url}/${doc.file.url}`}>{doc.name || "Archivo"}</a></li>
-                                                    )}
+                                                    )*/}
                                                 </ol>
                                             </div>
 

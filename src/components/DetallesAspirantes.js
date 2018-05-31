@@ -4,6 +4,7 @@ import {Url} from './Url.js'
 import PropTypes from "prop-types";
 import {Forbbiden} from './Forbbiden'
 import Modal from 'react-responsive-modal';
+import './css/DetallesAspirantes.css'
 
 const options ={
     headers: {
@@ -13,7 +14,7 @@ const options ={
     }
 
 }
-let a =  (<select id="posibilidad">
+let a =  (<select className="form-control" id="posibilidad">
     <option value="aprobado">
         Aprobado
     </option >
@@ -30,10 +31,12 @@ export class DetallesAspirantes extends Component{
     }
     constructor(props, context) {
         super(props, context);
-        this.state = {convocation:[], approved:[],rejected:[],interested:[], open: false, currentUser:{}, files:[]}
+        this.state = {convocation:[], approved:[],rejected:[],interested:[], open: false, currentUser:{}, files:[{name:"",file:{url:""}}],  currentFile:0,}
         this.handleOnCLicVerDocumentosAproved = this.handleOnCLicVerDocumentosAproved.bind(this)
         this.handleOnCLicVerDocumentosInteresting = this.handleOnCLicVerDocumentosInteresting.bind(this)
         this.handleOnCLicVerDocumentosRejected = this.handleOnCLicVerDocumentosRejected.bind(this)
+        this.handleOnClickLeft = this.handleOnClickLeft.bind(this);
+        this.handleOnClickRight = this.handleOnClickRight.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this)
         this.handleOnClickModificar = this.handleOnClickModificar.bind(this)
     }
@@ -48,7 +51,7 @@ export class DetallesAspirantes extends Component{
             }
             return response.json()
         }).then(jsonResponse=>{
-            console.log(jsonResponse)
+
             this.setState({convocation : jsonResponse})
 
         }).catch(error=>{
@@ -76,6 +79,7 @@ export class DetallesAspirantes extends Component{
         }).then(jsonResponse=>{
 
             files = jsonResponse
+            console.log(files)
             this.setState({ open: true,
                 currentUser,
                 files})
@@ -89,9 +93,6 @@ export class DetallesAspirantes extends Component{
         })
 
 
-        this.setState({ open: true,
-            currentUser,
-            files})
 
     }
     handleOnCLicVerDocumentosRejected(e){
@@ -202,11 +203,25 @@ export class DetallesAspirantes extends Component{
     onCloseModal = () => {
         this.setState({ open: false });
     };
+    handleOnClickLeft(){
+        let cf = this.state.currentFile
+        if(cf>0){
+            cf = cf - 1;
+            this.setState({currentFile: cf})
+        }
+    }
+    handleOnClickRight(){
+        let cf= this.state.currentFile
+        if(cf < this.state.files.length -1){
+            cf = cf + 1;
+            this.setState({currentFile: cf})
 
+        }
+    }
 
     render(){
         const {open} = this.state;
-        console.log(this.state.convocation)
+        console.log(this.state.files)
         if(localStorage.getItem('Admintoken')){
             return(
                 <div>
@@ -300,7 +315,7 @@ export class DetallesAspirantes extends Component{
 
                     </div>
                     <div className="col-md-3">
-                        <table>
+                        <table className="tbAspirantes">
                             <caption align="center">Aprobados</caption><br/>
                             <thead>
 
@@ -317,7 +332,7 @@ export class DetallesAspirantes extends Component{
                         </table>
                     </div>
                     <div className="col-md-3">
-                        <table>
+                        <table className="tbAspirantes">
                             <caption align="center">Interesados</caption><br/>
                             <thead>
 
@@ -334,7 +349,7 @@ export class DetallesAspirantes extends Component{
                         </table>
                     </div>
                     <div className="col-md-3">
-                        <table>
+                        <table className="tbAspirantes">
                             <caption align="center">Rechazados</caption><br/>
                             <thead>
 
@@ -357,18 +372,27 @@ export class DetallesAspirantes extends Component{
                             <div className="panel panel-default">
                                 <div className="panel-heading">{`${this.state.currentUser.name} ${this.state.currentUser.lastname} Estado:${this.state.currentUser.state}`}</div>
                                 <div className="panel-body col-md-12">
-                                    <ol>
-                                        { this.state.files.map((file, index)=>
-                                           <li key={index}><a target="_blank" href={`${Url}${file.file.url}`}>{file.name || "archivo"}</a></li>
-                                        )}
-                                    </ol>
+                                    <div className="container-fluid" align="center" >
+                                        <object width="50%"
+                                                data={`${Url}/${this.state.files[this.state.currentFile].file.url}`}>
+                                        </object>
+
+
+                                        <div className="row">
+                                            <div className="btn-group" align="center">
+                                                <button className="btn btn-default" onClick={this.handleOnClickLeft} ref="left"><i className="fa fa-caret-left"></i></button>
+
+                                                <button className="btn btn-default"  onClick={this.handleOnClickRight} ref="right"><i className="fa fa-caret-right"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="container-fluid">
 
                                             <div className="col-md-8">
                                                 {a}
                                             </div>
                                             <div className="col-md-4">
-                                                <button  onClick={this.handleOnClickModificar}>Modificar</button>
+                                                <button  className="btn btn-default" onClick={this.handleOnClickModificar}>Modificar</button>
                                             </div>
                                     </div>
 

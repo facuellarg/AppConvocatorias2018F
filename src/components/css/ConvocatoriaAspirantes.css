@@ -1,5 +1,10 @@
 .convTable{
     display: block;
     height: 400px;
-    overflow-y: scroll
+    overflow-y: scroll;
+    border-collapse: collapse;
+
+}
+.convTable tr {
+    border:  1px solid;
 }
